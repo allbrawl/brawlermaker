@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -c
 LDFLAGS = -lbrawlermaker
-TARGET_LIB = libbrawlmaker.a
+TARGET_LIB = libbrawlermaker.a
 INCLUDE_DIR = /usr/include
 LIB_DIR = /usr/lib
 
