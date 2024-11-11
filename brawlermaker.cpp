@@ -138,8 +138,6 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
 
         for (auto textsRow : textsRows)
         {
-            printf(textsRow[0].c_str());
-            printf("\n");
             if (textsRow[0] == brawler.tid)
             {
                 brawler.name = textsRow[1];
