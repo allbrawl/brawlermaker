@@ -8,9 +8,10 @@
 class BrawlerMaker
 {
 public:
-    void addBrawler(const Brawler &brawler);
-    void editBrawler(int id, const Brawler &brawler);
-    std::vector<Brawler> getBrawlers() const;
+    int addBrawler(const Brawler &brawler);
+    int editBrawler(int id, const Brawler &brawler);
+    std::vector<Brawler> getBrawlers(std::string charactersCSVPath, std::string cardsCSVPath, std::string skillsCSVPath, std::string textsCSVPath) const;
+    Brawler getBrawler(std::string codename) const;
 
 private:
     std::vector<Brawler> brawlers;

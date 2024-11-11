@@ -1,6 +1,7 @@
 *.o
 *.so
-libbrawlmaker.a
+libbrawlermaker.a
 .vscode
 # I just use the CSVs to check some values if you want base v29 csvs https://download.natesworks.com/baseCSVs.zip
 baseCSVs
+test.out
