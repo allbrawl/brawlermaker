@@ -2,21 +2,36 @@
 #include <brawlermaker.h>
 #include <csv.h>
 #include <stdexcept>
+#include <iostream>
 
-std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPath, const std::string cardsCSVPath, const std::string skillsCSVPath, const std::string textsCSVPath) const
+int toint(std::string s, int fallback)
 {
-    // REMEMBER
+    try
+    {
+        return stoi(s);
+    }
+    catch (const std::exception &e)
+    {
+        return fallback;
+    }
+}
+
+std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPath, const std::string cardsCSVPath, const std::string skillsCSVPath, const std::string textsCSVPath, bool ignoreNonHeros) const
+{
     CSVHandler handle;
     std::vector<Brawler> brawlers;
     auto rows = handle.getRows(charactersCSVPath);
     auto cardsRows = handle.getRows(cardsCSVPath);
     auto skillsRows = handle.getRows(skillsCSVPath);
     auto textsRows = handle.getRows(textsCSVPath);
+    auto charactersColumns = handle.getColumns(charactersCSVPath);
+    auto cardsColumns = handle.getColumns(cardsCSVPath);
+    auto skillsColumns = handle.getColumns(skillsCSVPath);
+
     bool datatypes = true;
 
-    for (auto row : rows)
+    for (auto &row : rows)
     {
-        // Skip row containing data types (string, int and boolean)
         if (datatypes)
         {
             datatypes = false;
@@ -24,8 +39,7 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
         }
         Brawler brawler;
         std::string type = row[20];
-        // Skip non brawlers
-        if (type != "Hero")
+        if (type != "Hero" && ignoreNonHeros == true)
         {
             continue;
         }
@@ -34,65 +48,79 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
 
         brawler.weaponSkill = row[4];
         brawler.ultimateSkill = row[5];
-        try
-        {
-            brawler.speed = std::stoi(row[7]);
-            brawler.health = std::stoi(row[8]);
-        }
-        catch (const std::invalid_argument &e)
-        {
-            throw std::runtime_error("Invalid argument in stoi for speed or health");
-        }
-        catch (const std::out_of_range &e)
-        {
-            throw std::runtime_error("Out of range in stoi for speed or health");
-        }
+
+        brawler.speed = toint(row[7], 0);
+        brawler.health = toint(row[8], 0);
+
         brawler.iconSWF = row[80];
         brawler.icon = row[81];
         brawler.pet = row[6];
-        try
-        {
-            brawler.scale = std::stoi(row[61]);
-        }
-        catch (const std::invalid_argument &e)
-        {
-            throw std::runtime_error("Invalid argument in stoi for scale");
-        }
-        catch (const std::out_of_range &e)
-        {
-            throw std::runtime_error("Out of range in stoi for scale");
-        }
-        // brawler.autoAttackRange = stoi(row[18]);
-        for (auto skillsRow : skillsRows)
+
+        brawler.scale = toint(row[61], 0);
+
+        brawler.attackRechargeUltimateAmount = toint(row[18], 0);
+
+        brawler.ultimateRechargeUltimateAmount = toint(row[19], 0);
+
+        for (auto &skillsRow : skillsRows)
         {
             if (skillsRow[0] == brawler.weaponSkill)
             {
-                brawler.weaponReloadTime = std::stoi(row[16]);
-                brawler.weaponAmmoCount = std::stoi(row[17]);
-                brawler.weaponDamage = std::stoi(row[18]);
-                brawler.attackSpread = std::stoi(row[21]);
-                brawler.weaponProjectileCount = std::stoi(row[23]);    // NumBulletsInOneAttack
-                brawler.weaponTimeBetweenAttacks = std::stoi(row[20]); // MsBetweenAttacks
-                brawler.attackDuration = std::stoi(row[9]);            // ActiveTime
-                brawler.weaponRange = std::stoi(row[11]);              // CastingRange
+                try
+                {
+                    brawler.ultimateReloadTime = toint(skillsRow[14], 0);
+
+                    brawler.weaponReloadTime = toint(skillsRow[14], 0);
+                    brawler.weaponAmmoCount = toint(skillsRow[15], 0);
+                    brawler.weaponDamage = toint(skillsRow[16], 0);
+
+                    brawler.attackSpread = toint(skillsRow[19], 0);
+
+                    brawler.weaponProjectileCount = toint(skillsRow[21], 0);
+
+                    brawler.weaponTimeBetweenAttacks = toint(skillsRow[18], 0);
+
+                    brawler.attackDuration = toint(skillsRow[7], 0);
+
+                    brawler.weaponRange = toint(skillsRow[9], 0);
+                }
+
+                catch (const std::exception &e)
+                {
+                    std::cerr << "Error: " << e.what() << " at line " << __LINE__ << " indentifier " << skillsRow[0] << std::endl;
+                    throw;
+                }
             }
             if (skillsRow[0] == brawler.ultimateSkill)
             {
-                brawler.ultimateRechargeTime = std::stoi(row[16]);
-                brawler.ultimateDamage = std::stoi(row[18]);
-                brawler.ultimateSpread = std::stoi(row[21]);
-                brawler.ultimateProjectileCount = std::stoi(row[23]);    // NumBulletsInOneAttack
-                brawler.ultimateTimeBetweenAttacks = std::stoi(row[20]); // MsBetweenAttacks
-                brawler.ultimateAttackDuration = std::stoi(row[9]);      // ActiveTime
-                brawler.ultimateRange = std::stoi(row[11]);              // CastingRange
+                try
+                {
+
+                    brawler.ultimateDamage = toint(skillsRow[16], 0);
+
+                    brawler.ultimateSpread = toint(skillsRow[19], 0);
+
+                    brawler.ultimateProjectileCount = 0;
+
+                    brawler.ultimateProjectileCount = toint(skillsRow[21], 0);
+
+                    brawler.ultimateAttackDuration = toint(skillsRow[7], 0);
+
+                    brawler.summonedCharacter == skillsRow[handle.getColumnIndex(skillsColumns, "SummonedCharacter")];
+
+                    brawler.ultimateRange = toint(skillsRow[9], 0);
+                }
+                catch (const std::exception &e)
+                {
+                    std::cerr << "Error: " << e.what() << " at line " << __LINE__ << " identifier " << skillsRow[0] << std::endl;
+                    throw;
+                }
             }
         }
 
         std::string weaponTID;
         std::string ultimateTID;
-        // 8th column in cards is type
-        // 3rd column in cards is target
-        for (auto cardsRow : cardsRows)
+        for (auto &cardsRow : cardsRows)
         {
             if (cardsRow[3] == brawler.codename)
             {
@@ -100,29 +128,17 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
                 {
                     const std::string csvRarity = cardsRow[13];
                     if (csvRarity == "common")
-                    {
                         brawler.rarity = Rarity::TrophyRoad;
-                    }
                     else if (csvRarity == "rare")
-                    {
                         brawler.rarity = Rarity::Rare;
-                    }
                     else if (csvRarity == "super_rare")
-                    {
                         brawler.rarity = Rarity::SuperRare;
-                    }
                     else if (csvRarity == "epic")
-                    {
                         brawler.rarity = Rarity::Epic;
-                    }
                     else if (csvRarity == "mega_epic")
-                    {
                         brawler.rarity = Rarity::Mythic;
-                    }
                     else if (csvRarity == "legendary")
-                    {
                         brawler.rarity = Rarity::Legendary;
-                    }
                     break;
                 }
                 else if (cardsRow[9] == brawler.weaponSkill)
@@ -136,7 +152,7 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
             }
         }
 
-        for (auto textsRow : textsRows)
+        for (auto &textsRow : textsRows)
         {
             if (textsRow[0] == brawler.tid)
             {
