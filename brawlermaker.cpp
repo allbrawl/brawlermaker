@@ -49,18 +49,18 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
         brawler.weaponSkill = row[4];
         brawler.ultimateSkill = row[5];
 
-        brawler.speed = toint(row[7], 0);
-        brawler.health = toint(row[8], 0);
+        brawler.speed = toint(row[7], NULL);
+        brawler.health = toint(row[8], NULL);
 
         brawler.iconSWF = row[80];
         brawler.icon = row[81];
         brawler.pet = row[6];
 
-        brawler.scale = toint(row[61], 0);
+        brawler.scale = toint(row[61], NULL);
 
-        brawler.attackRechargeUltimateAmount = toint(row[18], 0);
+        brawler.attackRechargeUltimateAmount = toint(row[18], NULL);
 
-        brawler.ultimateRechargeUltimateAmount = toint(row[19], 0);
+        brawler.ultimateRechargeUltimateAmount = toint(row[19], NULL);
 
         for (auto &skillsRow : skillsRows)
         {
@@ -68,21 +68,21 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
             {
                 try
                 {
-                    brawler.ultimateReloadTime = toint(skillsRow[14], 0);
+                    brawler.ultimateReloadTime = toint(skillsRow[14], NULL);
 
-                    brawler.weaponReloadTime = toint(skillsRow[14], 0);
-                    brawler.weaponAmmoCount = toint(skillsRow[15], 0);
-                    brawler.weaponDamage = toint(skillsRow[16], 0);
+                    brawler.weaponReloadTime = toint(skillsRow[14], NULL);
+                    brawler.weaponAmmoCount = toint(skillsRow[15], NULL);
+                    brawler.weaponDamage = toint(skillsRow[16], NULL);
 
-                    brawler.attackSpread = toint(skillsRow[19], 0);
+                    brawler.attackSpread = toint(skillsRow[19], NULL);
 
-                    brawler.weaponProjectileCount = toint(skillsRow[21], 0);
+                    brawler.weaponProjectileCount = toint(skillsRow[21], NULL);
 
-                    brawler.weaponTimeBetweenAttacks = toint(skillsRow[18], 0);
+                    brawler.weaponTimeBetweenAttacks = toint(skillsRow[18], NULL);
 
-                    brawler.attackDuration = toint(skillsRow[7], 0);
+                    brawler.attackDuration = toint(skillsRow[7], NULL);
 
-                    brawler.weaponRange = toint(skillsRow[9], 0);
+                    brawler.weaponRange = toint(skillsRow[9], NULL);
                 }
 
                 catch (const std::exception &e)
@@ -96,19 +96,19 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
                 try
                 {
 
-                    brawler.ultimateDamage = toint(skillsRow[16], 0);
+                    brawler.ultimateDamage = toint(skillsRow[16], NULL);
 
-                    brawler.ultimateSpread = toint(skillsRow[19], 0);
+                    brawler.ultimateSpread = toint(skillsRow[19], NULL);
 
                     brawler.ultimateProjectileCount = 0;
 
-                    brawler.ultimateProjectileCount = toint(skillsRow[21], 0);
+                    brawler.ultimateProjectileCount = toint(skillsRow[21], NULL);
 
-                    brawler.ultimateAttackDuration = toint(skillsRow[7], 0);
+                    brawler.ultimateAttackDuration = toint(skillsRow[7], NULL);
 
                     brawler.summonedCharacter == skillsRow[handle.getColumnIndex(skillsColumns, "SummonedCharacter")];
 
-                    brawler.ultimateRange = toint(skillsRow[9], 0);
+                    brawler.ultimateRange = toint(skillsRow[9], NULL);
                 }
                 catch (const std::exception &e)
                 {
