@@ -6,12 +6,12 @@
 
 #include <vector>
 #include <string>
-#include <brawler.h>
+#include "brawler.h"
 
 class BrawlerMaker
 {
 public:
-    int addBrawler(const Brawler &brawler);
+    int addBrawler(const Brawler &brawler, std::string charactersCSVPath, std::string cardsCSVPath, std::string skillsCSVPath, std::string textsCSVPath);
     int editBrawler(int id, const Brawler &brawler);
     std::vector<Brawler> getBrawlers(std::string charactersCSVPath, std::string cardsCSVPath, std::string skillsCSVPath, std::string textsCSVPath, bool ignoreNonHeros = false) const;
     Brawler getBrawler(std::string codename) const;

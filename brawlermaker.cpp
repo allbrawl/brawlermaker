@@ -1,8 +1,9 @@
-#include <brawler.h>
-#include <brawlermaker.h>
+#include "brawler.h"
+#include "brawlermaker.h"
 #include <csv.h>
 #include <stdexcept>
 #include <iostream>
+#include <csv.h>
 
 int toint(std::string s, int fallback)
 {
@@ -187,4 +188,22 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
         brawlers.push_back(brawler);
     }
     return brawlers;
+}
+
+int addBrawler(const Brawler &brawler, std::string charactersCSVPath, std::string cardsCSVPath, std::string skillsCSVPath, std::string textsCSVPath)
+{
+    CSVHandler csv;
+    CSV characters = csv.readCSV(charactersCSVPath);
+    std::vector<std::string> newCharacter = {brawler.codename, "", "", "bull", brawler.name + "Weapon", brawler.name + "Ulti", "",
+                                             std::to_string(brawler.speed), std::to_string(brawler.health), "", "", "", "",
+                                             "", "", "", "12", "", std::to_string(brawler.attackRechargeUltimateAmount), std::to_string(brawler.ultimateRechargeUltimateAmount), "Hero", "", brawler.name + "Default", "",
+                                             "", "",
+                                             "", "", "", "takedamage_gen", "death_shotgun_girl", "Gen_move_fx", "reload_shotgun_girl",
+                                             "No_ammo_shotgungirl", "Dry_fire_shotgungirl", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+                                             "", "", "30", "", "80", "80", "", "", "35", std::to_string(brawler.scale), "210", "284", "90", "175", "260", "", "", "", "-25",
+                                             "40", "120", "Medium", "-48", "", "450", "", "", brawler.tid, "", "sc/ui.sc",
+                                             "hero_icon_" + brawler.icon, "0", "human", "footstep", "25", "250", "200", "", "", "1", "3", "2", "", "", "", "",
+                                             "", "", "", "", "", "ShellyTutorial", "", "", "", "", "", "3", "3", "3"};
+    characters.rows.push_back(newCharacter);
+    csv.writeCSV(charactersCSVPath, characters);
 }
