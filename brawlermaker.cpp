@@ -127,6 +127,7 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
             {
                 if (cardsRow[8] == "unlock")
                 {
+                    brawler.number = toint(cardsRow[handle.getColumnIndex(cardsColumns, "SortOrder")], UNDEFINED);
                     const std::string csvRarity = cardsRow[13];
                     if (csvRarity == "common")
                         brawler.rarity = Rarity::TrophyRoad;
@@ -206,4 +207,35 @@ int addBrawler(const Brawler &brawler, std::string charactersCSVPath, std::strin
                                              "", "", "", "", "", "ShellyTutorial", "", "", "", "", "", "3", "3", "3"};
     characters.rows.push_back(newCharacter);
     csv.writeCSV(charactersCSVPath, characters);
+
+    CSV cards = csv.readCSV(cardsCSVPath);
+    std::string rarity;
+    if (brawler.rarity == Rarity::Rare)
+    {
+        rarity = "rare";
+    }
+    else if (brawler.rarity == Rarity::SuperRare)
+    {
+        rarity = "super_rare";
+    }
+    else if (brawler.rarity == Rarity::Epic)
+    {
+        rarity = "epic";
+    }
+    else if (brawler.rarity == Rarity::Mythic)
+    {
+        rarity = "mega_epic";
+    }
+    else if (brawler.rarity == Rarity::Legendary)
+    {
+        rarity = "legendary";
+    }
+    else
+    {
+        rarity = "common";
+    }
+
+    std::vector<std::string> newCard1 = {brawler.codename + "_unlock", "sc/ui.sc", "", brawler.name, "", "", "0", "", "unlock", "", "",
+             "", "", rarity,
+             "", "", "", "", "", "", std::to_string(brawler.number), ""};
 }

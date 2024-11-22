@@ -8,7 +8,7 @@ int main()
     auto brawlers = handle.getBrawlers("baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv", true);
     for (auto brawler : brawlers)
     {
-        std::cout << brawler.tid << std::endl;
+        std::cout << brawler.number << std::endl;
     }
     return 0;
 }
