@@ -1,5 +1,8 @@
 #ifndef BRAWLERMAKER_H
 #define BRAWLERMAKER_H
+#ifndef UNDEFINED
+#define UNDEFINED 0
+#endif
 
 #include <vector>
 #include <string>
