@@ -79,7 +79,7 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
                     brawler.weaponTimeBetweenAttacks = toint(skillsRow[18], UNDEFINED);
                     brawler.attackDuration = toint(skillsRow[7], UNDEFINED);
                     brawler.weaponRange = toint(skillsRow[9], UNDEFINED);
-                    brawler.attackProjectile = toint(skillsRow[handle.getColumnIndex(skillsColumns, "AttackProjectile")], UNDEFINED);
+                    brawler.attackProjectile = skillsRow[handle.getColumnIndex(skillsColumns, "Projectile")];
                 }
 
                 catch (const std::exception &e)
@@ -94,18 +94,13 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
                 {
 
                     brawler.ultimateDamage = toint(skillsRow[16], UNDEFINED);
-
                     brawler.ultimateSpread = toint(skillsRow[19], UNDEFINED);
-
                     brawler.ultimateProjectileCount = 0;
-
                     brawler.ultimateProjectileCount = toint(skillsRow[21], UNDEFINED);
-
                     brawler.ultimateAttackDuration = toint(skillsRow[7], UNDEFINED);
-
                     brawler.summonedCharacter == skillsRow[handle.getColumnIndex(skillsColumns, "SummonedCharacter")];
-
                     brawler.ultimateRange = toint(skillsRow[9], UNDEFINED);
+                    brawler.ultimateProjectile = skillsRow[handle.getColumnIndex(skillsColumns, "Projectile")];
                 }
                 catch (const std::exception &e)
                 {
