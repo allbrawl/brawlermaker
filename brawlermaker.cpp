@@ -154,7 +154,7 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
         {
             if (textsRow[0] == brawler.tid)
             {
-                brawler.codename = textsRow[1];
+                brawler.name = textsRow[1];
             }
             if (textsRow[0] == brawler.tid + "_DESC")
             {
