@@ -1,8 +1,7 @@
 #ifndef BRAWLERMAKER_H
 #define BRAWLERMAKER_H
-#ifndef UNDEFINED
-#define UNDEFINED 0
-#endif
+#include <limits>
+constexpr int UNDEFINED = std::numeric_limits<int>::min();
 
 #include <vector>
 #include <string>
