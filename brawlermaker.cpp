@@ -110,10 +110,16 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
             }
         }
 
-        std::string weaponTID;
-        std::string ultimateTID;
         for (auto &cardsRow : cardsRows)
         {
+            if (cardsRow[handle.getColumnIndex(cardsColumns, "Skill")] == brawler.weaponSkill)
+            {
+                brawler.weaponTID = cardsRow[14];
+            }
+            if (cardsRow[handle.getColumnIndex(cardsColumns, "Skill")] == brawler.ultimateSkill)
+            {
+                brawler.ultimateTID = cardsRow[14];
+            }
             if (cardsRow[3] == brawler.codename)
             {
                 if (cardsRow[8] == "unlock")
@@ -134,14 +140,6 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
                         brawler.rarity = Rarity::Legendary;
                     break;
                 }
-                else if (cardsRow[9] == brawler.weaponSkill)
-                {
-                    weaponTID = cardsRow[14];
-                }
-                else if (cardsRow[9] == brawler.ultimateSkill)
-                {
-                    ultimateTID = cardsRow[14];
-                }
             }
         }
 
@@ -156,22 +154,22 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
                 brawler.description = textsRow[1];
                 break;
             }
-            else if (textsRow[0] == weaponTID)
+            else if (textsRow[0] == brawler.weaponTID)
             {
                 brawler.weaponName = textsRow[1];
                 break;
             }
-            else if (textsRow[0] == ultimateTID)
+            else if (textsRow[0] == brawler.ultimateTID)
             {
                 brawler.ultimateName = textsRow[1];
                 break;
             }
-            else if (textsRow[0] == weaponTID + "_DESC")
+            else if (textsRow[0] == brawler.weaponTID + "_DESC")
             {
                 brawler.weaponDescription = textsRow[1];
                 break;
             }
-            else if (textsRow[0] == ultimateTID + "_DESC")
+            else if (textsRow[0] == brawler.ultimateTID + "_DESC")
             {
                 brawler.ultimateDescription = textsRow[1];
                 break;
