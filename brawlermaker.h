@@ -11,9 +11,10 @@ class BrawlerMaker
 {
 public:
     int addBrawler(const Brawler &brawler, std::string charactersCSVPath, std::string cardsCSVPath, std::string skillsCSVPath, std::string textsCSVPath);
-    int editBrawler(int id, const Brawler &brawler);
+    int editBrawler(int tid, const Brawler &brawler);
+    int removeBrawler(std::string codename, std::string charactersCSVPath, std::string cardsCSVPath, std::string skillsCSVPath, std::string textsCSVPath);
     std::vector<Brawler> getBrawlers(std::string charactersCSVPath, std::string cardsCSVPath, std::string skillsCSVPath, std::string textsCSVPath, bool ignoreNonHeros = false) const;
-    Brawler getBrawler(std::string codename) const;
+    Brawler getBrawler(std::string tid) const;
 
 private:
     std::vector<Brawler> brawlers;
