@@ -21,17 +21,14 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
 {
     CSVHandler csv;
     std::vector<Brawler> brawlers;
-    auto rows = csv.getRows(charactersCSVPath);
-    auto cardsRows = csv.getRows(cardsCSVPath);
-    auto skillsRows = csv.getRows(skillsCSVPath);
-    auto textsRows = csv.getRows(textsCSVPath);
-    auto charactersColumns = csv.getColumns(charactersCSVPath);
-    auto cardsColumns = csv.getColumns(cardsCSVPath);
-    auto skillsColumns = csv.getColumns(skillsCSVPath);
+    auto characters = csv.readCSV(charactersCSVPath);
+    auto cards = csv.readCSV(cardsCSVPath);
+    auto skills = csv.readCSV(skillsCSVPath);
+    auto texts = csv.readCSV(textsCSVPath);
 
     bool datatypes = true;
 
-    for (auto &row : rows)
+    for (auto &row : characters.rows)
     {
         if (datatypes)
         {
@@ -64,7 +61,7 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
 
         brawler.ultimateRechargeUltimateAmount = toint(row[19], UNDEFINED);
 
-        for (auto &skillsRow : skillsRows)
+        for (auto &skillsRow : skills.rows)
         {
             if (skillsRow[0] == brawler.weaponSkill)
             {
@@ -80,7 +77,7 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
                     brawler.weaponTimeBetweenAttacks = toint(skillsRow[18], UNDEFINED);
                     brawler.attackDuration = toint(skillsRow[7], UNDEFINED);
                     brawler.weaponRange = toint(skillsRow[9], UNDEFINED);
-                    brawler.attackProjectile = skillsRow[csv.getColumnIndex(skillsColumns, "Projectile")];
+                    brawler.attackProjectile = skillsRow[skills.getColumnIndex("Projectile")];
                 }
 
                 catch (const std::exception &e)
@@ -99,9 +96,9 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
                     brawler.ultimateProjectileCount = 0;
                     brawler.ultimateProjectileCount = toint(skillsRow[21], UNDEFINED);
                     brawler.ultimateAttackDuration = toint(skillsRow[7], UNDEFINED);
-                    brawler.summonedCharacter == skillsRow[csv.getColumnIndex(skillsColumns, "SummonedCharacter")];
+                    brawler.summonedCharacter == skillsRow[skills.getColumnIndex("SummonedCharacter")];
                     brawler.ultimateRange = toint(skillsRow[9], UNDEFINED);
-                    brawler.ultimateProjectile = skillsRow[csv.getColumnIndex(skillsColumns, "Projectile")];
+                    brawler.ultimateProjectile = skillsRow[skills.getColumnIndex("Projectile")];
                 }
                 catch (const std::exception &e)
                 {
@@ -111,13 +108,13 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
             }
         }
 
-        for (auto &cardsRow : cardsRows)
+        for (auto &cardsRow : cards.rows)
         {
             if (cardsRow[3] == brawler.codename)
             {
-                if (cardsRow[csv.getColumnIndex(cardsColumns, "Type")] == "unlock")
+                if (cardsRow[cards.getColumnIndex("Type")] == "unlock")
                 {
-                    brawler.number = toint(cardsRow[csv.getColumnIndex(cardsColumns, "SortOrder")], UNDEFINED);
+                    brawler.number = toint(cardsRow[cards.getColumnIndex("SortOrder")], UNDEFINED);
                     const std::string csvRarity = cardsRow[13];
                     if (csvRarity == "common")
                         brawler.rarity = Rarity::TrophyRoad;
@@ -132,21 +129,21 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
                     else if (csvRarity == "legendary")
                         brawler.rarity = Rarity::Legendary;
                 }
-                else if (cardsRow[csv.getColumnIndex(cardsColumns, "Type")] == "skill")
+                else if (cardsRow[cards.getColumnIndex("Type")] == "skill")
                 {
-                    if (cardsRow[csv.getColumnIndex(cardsColumns, "Skill")] == brawler.weaponSkill)
+                    if (cardsRow[cards.getColumnIndex("Skill")] == brawler.weaponSkill)
                     {
-                        brawler.weaponTID = cardsRow[csv.getColumnIndex(cardsColumns, "TID")];
+                        brawler.weaponTID = cardsRow[cards.getColumnIndex("TID")];
                     }
-                    else if (cardsRow[csv.getColumnIndex(cardsColumns, "Skill")] == brawler.ultimateSkill)
+                    else if (cardsRow[cards.getColumnIndex("Skill")] == brawler.ultimateSkill)
                     {
-                        brawler.ultimateTID = cardsRow[csv.getColumnIndex(cardsColumns, "TID")];
+                        brawler.ultimateTID = cardsRow[cards.getColumnIndex("TID")];
                     }
                 }
             }
         }
 
-        for (auto &textsRow : textsRows)
+        for (auto &textsRow : texts.rows)
         {
             if (textsRow[0] == brawler.tid)
             {
@@ -325,11 +322,11 @@ int BrawlerMaker::removeBrawler(std::string tid, std::string charactersCSVPath, 
     // Remove character from characters.csv
     for (auto it = characters.rows.begin(); it != characters.rows.end();)
     {
-        if ((*it)[csv.getColumnIndex(characters.columns, "TID")] == tid)
+        if ((*it)[characters.getColumnIndex("TID")] == tid)
         {
             name = (*it)[0];
-            weaponSkill = (*it)[csv.getColumnIndex(characters.columns, "WeaponSkill")];
-            ultimateSkill = (*it)[csv.getColumnIndex(characters.columns, "UltimateSKill")];
+            weaponSkill = (*it)[characters.getColumnIndex("WeaponSkill")];
+            ultimateSkill = (*it)[characters.getColumnIndex("UltimateSKill")];
             it = texts.rows.erase(it);
         }
         else
@@ -344,11 +341,11 @@ int BrawlerMaker::removeBrawler(std::string tid, std::string charactersCSVPath, 
     // Remove from skills.csv
     for (auto it = skills.rows.begin(); it != skills.rows.end();)
     {
-        if ((*it)[csv.getColumnIndex(skills.columns, "Name")] == weaponSkill)
+        if ((*it)[skills.getColumnIndex("Name")] == weaponSkill)
         {
             it = texts.rows.erase(it);
         }
-        else if ((*it)[csv.getColumnIndex(skills.columns, "Name")] == ultimateSkill)
+        else if ((*it)[skills.getColumnIndex("Name")] == ultimateSkill)
         {
             it = texts.rows.erase(it);
         }
@@ -366,15 +363,15 @@ int BrawlerMaker::removeBrawler(std::string tid, std::string charactersCSVPath, 
     // Remove all mentions of brawler from cards.csv
     for (auto it = cards.rows.begin(); it != cards.rows.end();)
     {
-        if ((*it)[csv.getColumnIndex(cards.columns, "Target")] == name)
+        if ((*it)[cards.getColumnIndex("Target")] == name)
         {
-            if ((*it)[csv.getColumnIndex(cards.columns, "Skill")] == weaponSkill)
+            if ((*it)[cards.getColumnIndex("Skill")] == weaponSkill)
             {
-                weaponTID = (*it)[csv.getColumnIndex(cards.columns, "TID")];
+                weaponTID = (*it)[cards.getColumnIndex("TID")];
             }
-            else if ((*it)[csv.getColumnIndex(cards.columns, "Skill")] == ultimateSkill)
+            else if ((*it)[cards.getColumnIndex("Skill")] == ultimateSkill)
             {
-                ultimateTID = (*it)[csv.getColumnIndex(cards.columns, "TID")];
+                ultimateTID = (*it)[cards.getColumnIndex("TID")];
             }
             it = texts.rows.erase(it);
         }
