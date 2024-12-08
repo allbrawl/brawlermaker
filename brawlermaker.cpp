@@ -194,7 +194,7 @@ int BrawlerMaker::addBrawler(const Brawler &brawler, std::string charactersCSVPa
                                              "hero_icon_" + brawler.icon, "0", "human", "footstep", "25", "250", "200", "", "", "1", "3", "2", "", "", "", "",
                                              "", "", "", "", "", "ShellyTutorial", "", "", "", "", "", "3", "3", "3"};
     characters.rows.push_back(newCharacter);
-    csv.writeCSV(charactersCSVPath, characters);
+    characters.writeCSV();
 
     CSV cards = csv.readCSV(cardsCSVPath);
     std::string rarity;
@@ -247,7 +247,7 @@ int BrawlerMaker::addBrawler(const Brawler &brawler, std::string charactersCSVPa
 
     cards.rows.push_back(cardUlti);
 
-    csv.writeCSV(cardsCSVPath, cards);
+    cards.writeCSV();
 
     auto skills = csv.readCSV(skillsCSVPath);
 
@@ -269,7 +269,7 @@ int BrawlerMaker::addBrawler(const Brawler &brawler, std::string charactersCSVPa
 
     skills.rows.push_back(ultimateSkill);
 
-    csv.writeCSV(skillsCSVPath, skills);
+    skills.writeCSV();
 
     auto texts = csv.readCSV(textsCSVPath);
 
@@ -301,7 +301,7 @@ int BrawlerMaker::addBrawler(const Brawler &brawler, std::string charactersCSVPa
 
     texts.rows.push_back(brawlerUltimateDescription);
 
-    csv.writeCSV(textsCSVPath, texts);
+    texts.writeCSV();
 
     return 0;
 }
@@ -336,7 +336,7 @@ int BrawlerMaker::removeBrawler(std::string tid, std::string charactersCSVPath, 
     }
 
     // Write changes to characters.csv
-    csv.writeCSV(charactersCSVPath, characters);
+    characters.writeCSV();
 
     // Remove from skills.csv
     for (auto it = skills.rows.begin(); it != skills.rows.end();)
@@ -355,7 +355,7 @@ int BrawlerMaker::removeBrawler(std::string tid, std::string charactersCSVPath, 
         }
     }
 
-    csv.writeCSV(skillsCSVPath, skills);
+    skills.writeCSV();
 
     std::string weaponTID;
     std::string ultimateTID;
@@ -380,6 +380,8 @@ int BrawlerMaker::removeBrawler(std::string tid, std::string charactersCSVPath, 
             ++it;
         }
     }
+
+    cards.writeCSV();
 
     // Remove all mentions of brawler from texts.csv
     for (auto it = texts.rows.begin(); it != texts.rows.end();)
@@ -417,4 +419,6 @@ int BrawlerMaker::removeBrawler(std::string tid, std::string charactersCSVPath, 
             ++it;
         }
     }
+
+    texts.writeCSV();
 }
