@@ -156,6 +156,10 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
             {
                 brawler.description = textsRow[1];
             }
+            else if (textsRow[0] == brawler.tid + "_SHORT_DESC")
+            {
+                brawler.shortDescription = textsRow[1];
+            }
             else if (textsRow[0] == brawler.weaponTID)
             {
                 brawler.weaponName = textsRow[1];
@@ -279,6 +283,10 @@ int addBrawler(const Brawler &brawler, std::string charactersCSVPath, std::strin
     std::vector<std::string> brawlerDescription = {brawler.tid + "_DESC", brawler.description};
 
     texts.rows.push_back(brawlerDescription);
+
+    std::vector<std::string> brawlerShortDescription = {brawler.tid + "_SHORT_DESC", brawler.shortDescription};
+
+    texts.rows.push_back(brawlerShortDescription);
 
     std::vector<std::string> brawlerWeaponName = {brawler.weaponTID, brawler.weaponName};
 
