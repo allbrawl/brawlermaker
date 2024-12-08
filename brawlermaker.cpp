@@ -45,6 +45,7 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
             continue;
         }
         brawler.codename = row[0];
+
         brawler.tid = row[77];
 
         brawler.weaponSkill = row[4];
@@ -112,17 +113,9 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
 
         for (auto &cardsRow : cardsRows)
         {
-            if (cardsRow[handle.getColumnIndex(cardsColumns, "Skill")] == brawler.weaponSkill)
-            {
-                brawler.weaponTID = cardsRow[14];
-            }
-            if (cardsRow[handle.getColumnIndex(cardsColumns, "Skill")] == brawler.ultimateSkill)
-            {
-                brawler.ultimateTID = cardsRow[14];
-            }
             if (cardsRow[3] == brawler.codename)
             {
-                if (cardsRow[8] == "unlock")
+                if (cardsRow[handle.getColumnIndex(cardsColumns, "Type")] == "unlock")
                 {
                     brawler.number = toint(cardsRow[handle.getColumnIndex(cardsColumns, "SortOrder")], UNDEFINED);
                     const std::string csvRarity = cardsRow[13];
@@ -138,7 +131,17 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
                         brawler.rarity = Rarity::Mythic;
                     else if (csvRarity == "legendary")
                         brawler.rarity = Rarity::Legendary;
-                    break;
+                }
+                else if (cardsRow[handle.getColumnIndex(cardsColumns, "Type")] == "skill")
+                {
+                    if (cardsRow[handle.getColumnIndex(cardsColumns, "Skill")] == brawler.weaponSkill)
+                    {
+                        brawler.weaponTID = cardsRow[handle.getColumnIndex(cardsColumns, "TID")];
+                    }
+                    else if (cardsRow[handle.getColumnIndex(cardsColumns, "Skill")] == brawler.ultimateSkill)
+                    {
+                        brawler.ultimateTID = cardsRow[handle.getColumnIndex(cardsColumns, "TID")];
+                    }
                 }
             }
         }
