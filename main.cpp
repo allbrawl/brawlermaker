@@ -12,7 +12,6 @@ int main(int argc, char **argv)
     }
     if (!strcmp("list", argv[1]))
     {
-
         BrawlerMaker handle;
         auto brawlers = handle.getBrawlers("baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv", true);
         for (auto brawler : brawlers)
