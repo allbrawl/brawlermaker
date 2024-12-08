@@ -152,30 +152,25 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
             {
                 brawler.name = textsRow[1];
             }
-            if (textsRow[0] == brawler.tid + "_DESC")
+            else if (textsRow[0] == brawler.tid + "_DESC")
             {
                 brawler.description = textsRow[1];
-                break;
             }
             else if (textsRow[0] == brawler.weaponTID)
             {
                 brawler.weaponName = textsRow[1];
-                break;
             }
             else if (textsRow[0] == brawler.ultimateTID)
             {
                 brawler.ultimateName = textsRow[1];
-                break;
             }
             else if (textsRow[0] == brawler.weaponTID + "_DESC")
             {
                 brawler.weaponDescription = textsRow[1];
-                break;
             }
             else if (textsRow[0] == brawler.ultimateTID + "_DESC")
             {
                 brawler.ultimateDescription = textsRow[1];
-                break;
             }
         }
         brawlers.push_back(brawler);
