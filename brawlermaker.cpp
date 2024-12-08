@@ -222,45 +222,79 @@ int addBrawler(const Brawler &brawler, std::string charactersCSVPath, std::strin
         rarity = "common";
     }
 
-    std::vector<std::string> card_unlock = {brawler.codename + "_unlock", "sc/ui.sc", "", brawler.codename, "", "", "0", "", "unlock", "", "",
+    std::vector<std::string> cardUnlock = {brawler.codename + "_unlock", "sc/ui.sc", "", brawler.codename, "", "", "0", "", "unlock", "", "",
                                             "", "", rarity,
                                             "", "", "", "", "", "", std::to_string(brawler.number), ""};
 
-    cards.rows.push_back(card_unlock);
+    cards.rows.push_back(cardUnlock);
 
-    std::vector<std::string> card_hp = {brawler.codename + "_hp", "sc/ui.sc", "health_icon", brawler.codename, "", "", "1", "", "hp", "", "",
+    std::vector<std::string> cardHP = {brawler.codename + "_hp", "sc/ui.sc", "health_icon", brawler.codename, "", "", "1", "", "hp", "", "",
                                         "", "",
                                         "common", "TID_ARMOR", "TID_ARMOR", "", "", "genicon_health", "", "", ""};
 
-    cards.rows.push_back(card_hp);
+    cards.rows.push_back(cardHP);
 
-    std::vector<std::string> card_weapon = {brawler.codename + "_abi", "sc/ui.sc", "attack_icon", brawler.codename, "", "", "2", "", "skill",
+    std::vector<std::string> cardWeapon = {brawler.codename + "_abi", "sc/ui.sc", "attack_icon", brawler.codename, "", "", "2", "", "skill",
                                             brawler.codename + "Weapon", "", "", "", "common", brawler.tid + "_WEAPON",
                                             "TID_STAT_DAMAGE", "", "", "genicon_damage", "", "", ""};
 
-    cards.rows.push_back(card_weapon);
+    cards.rows.push_back(cardWeapon);
 
-    std::vector<std::string> card_ulti = {brawler.codename + "_ulti", "sc/ui.sc", "ulti_icon", brawler.codename, "", "", "3", "", "skill",
+    std::vector<std::string> cardUlti = {brawler.codename + "_ulti", "sc/ui.sc", "ulti_icon", brawler.codename, "", "", "3", "", "skill",
                                           brawler.codename + "Ulti", "", "", "", "common", brawler.tid + "_ULTI",
                                           "TID_STAT_DAMAGE", "", "", "genicon_damage", "", "", ""};
 
-    cards.rows.push_back(card_ulti);
+    cards.rows.push_back(cardUlti);
 
     csv.writeCSV(cardsCSVPath, cards);
 
     auto skills = csv.readCSV(skillsCSVPath);
 
-    std::vector<std::string> weapon_skill = {brawler.codename + "Weapon", "Attack", "true", "true", "true", "", "50", std::to_string(brawler.attackDuration), "",
+    std::vector<std::string> weaponSkill = {brawler.codename + "Weapon", "Attack", "true", "true", "true", "", "50", std::to_string(brawler.attackDuration), "",
                                              std::to_string(brawler.weaponRange), "", "",
                                              "", "", std::to_string(brawler.weaponReloadTime), std::to_string(brawler.weaponAmmoCount), std::to_string(brawler.weaponDamage), "", std::to_string(brawler.weaponTimeBetweenAttacks),
                                              std::to_string(brawler.attackSpread), "", std::to_string(brawler.attackProjectileCount), "",
                                              "true", "", "", "", "", "", "", "", "", brawler.attackProjectile, "", "", "", "", "", "", "", "",
                                              "sc/ui.sc", "rapid_fire_button", "rico_def_atk", "", "", "", "", "", "", "", "", "", "", "", ""};
 
-    std::vector<std::string> ultimate_skill = {brawler.codename + "Ulti", "Attack", "true", "true", "true", "", "50", std::to_string(brawler.ultimateAttackDuration), "",
+    skills.rows.push_back(weaponSkill);
+
+    std::vector<std::string> ultimateSkill = {brawler.codename + "Ulti", "Attack", "true", "true", "true", "", "50", std::to_string(brawler.ultimateAttackDuration), "",
                                                std::to_string(brawler.ultimateRange), "", "",
                                                "", "", "", "", std::to_string(brawler.ultimateDamage), "", std::to_string(brawler.ultimateTimeBetweenAttacks), std::to_string(brawler.ultimateSpread), "",
                                                std::to_string(brawler.ultimateProjectileCount), "",
                                                "true", "", "", "", "", "", "", "", "", brawler.ultimateProjectile, "", "", "", "", "", "", "", "",
                                                "sc/ui.sc", "rapid_fire_button", "rico_def_atk", "", "", "", "", "", "", "", "", "", "", "", ""};
+
+    skills.rows.push_back(ultimateSkill);
+
+    csv.writeCSV(skillsCSVPath, skills);
+
+    auto texts = csv.readCSV(textsCSVPath);
+
+    std::vector<std::string> brawlerName = {brawler.tid, brawler.name};
+
+    texts.rows.push_back(brawlerName);
+
+    std::vector<std::string> brawlerDescription = {brawler.tid + "_DESC", brawler.description};
+
+    texts.rows.push_back(brawlerDescription);
+
+    std::vector<std::string> brawlerWeaponName = {brawler.weaponTID, brawler.weaponName};
+
+    texts.rows.push_back(brawlerWeaponName);
+
+    std::vector<std::string> brawlerWeaponDescription = {brawler.weaponTID + "_DESC", brawler.weaponDescription};
+
+    texts.rows.push_back(brawlerWeaponDescription);
+
+    std::vector<std::string> brawlerUltimateName = {brawler.ultimateTID, brawler.ultimateName};
+
+    texts.rows.push_back(brawlerUltimateName);
+
+    std::vector<std::string> brawlerUltimateDescription = {brawler.ultimateTID + "_DESC", brawler.ultimateDescription};
+
+    texts.rows.push_back(brawlerUltimateDescription);
+
+    csv.writeCSV(textsCSVPath, texts);
 }
