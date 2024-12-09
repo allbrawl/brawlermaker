@@ -17,30 +17,22 @@ int toint(std::string s, int fallback)
     }
 }
 
-std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPath, const std::string cardsCSVPath, const std::string skillsCSVPath, const std::string textsCSVPath, bool ignoreNonHeros) const
+Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charactersCSVPath, const std::string cardsCSVPath, const std::string skillsCSVPath, const std::string textsCSVPath) const
 {
     CSVHandler csv;
-    std::vector<Brawler> brawlers;
+    Brawler brawler;
     auto characters = csv.readCSV(charactersCSVPath);
     auto cards = csv.readCSV(cardsCSVPath);
     auto skills = csv.readCSV(skillsCSVPath);
     auto texts = csv.readCSV(textsCSVPath);
 
-    bool datatypes = true;
-
     for (auto &row : characters.rows)
     {
-        if (datatypes)
+        if (row[characters.getColumnIndex("TID")] != tid)
         {
-            datatypes = false;
             continue;
         }
-        Brawler brawler;
         std::string type = row[20];
-        if (type != "Hero" && ignoreNonHeros == true)
-        {
-            continue;
-        }
         brawler.codename = row[0];
 
         brawler.tid = row[77];
@@ -174,6 +166,30 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(const std::string charactersCSVPa
                 brawler.ultimateDescription = textsRow[1];
             }
         }
+        break;
+    }
+    return brawler;
+}
+
+std::vector<Brawler> BrawlerMaker::getBrawlers(std::string charactersCSVPath, std::string cardsCSVPath, std::string skillsCSVPath, std::string textsCSVPath, bool ignoreNonHeros)
+{
+    CSVHandler csv;
+    auto characters = csv.readCSV(charactersCSVPath);
+    std::vector<Brawler> brawlers;
+    bool datatypes = true;
+    for (auto row : characters.rows)
+    {
+        if (datatypes)
+        {
+            datatypes = false;
+            continue;
+        }
+        if (ignoreNonHeros && row[characters.getColumnIndex("Type")] != "Hero")
+        {
+            continue;
+        }
+        Brawler brawler;
+        brawler = getBrawler(row[characters.getColumnIndex("TID")], charactersCSVPath, cardsCSVPath, skillsCSVPath, textsCSVPath);
         brawlers.push_back(brawler);
     }
     return brawlers;
@@ -421,4 +437,15 @@ int BrawlerMaker::removeBrawler(std::string tid, std::string charactersCSVPath, 
     }
 
     texts.writeCSV();
+}
+
+int BrawlerMaker::editBrawler(int tid, const Brawler &brawler, std::string charactersCSVPath, std::string cardsCSVPath, std::string skillsCSVPath, std::string textsCSVPath)
+{
+    CSVHandler csv;
+    auto characters = csv.readCSV(charactersCSVPath);
+    auto cards = csv.readCSV(cardsCSVPath);
+    auto skills = csv.readCSV(skillsCSVPath);
+    auto texts = csv.readCSV(textsCSVPath);
+
+    // TODO
 }
