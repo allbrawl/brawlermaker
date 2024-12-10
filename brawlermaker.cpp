@@ -32,26 +32,20 @@ Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charac
         {
             continue;
         }
+
         std::string type = row["Type"];
         brawler.codename = row["Name"];
-
         brawler.tid = row["TID"];
-
-        brawler.weaponSkill = row[4];
-        brawler.ultimateSkill = row[5];
-
-        brawler.speed = toint(row[7], UNDEFINED);
-        brawler.health = toint(row[8], UNDEFINED);
-
-        brawler.iconSWF = row[80];
-        brawler.icon = row[81];
-        brawler.pet = row[6];
-
-        brawler.scale = toint(row[61], UNDEFINED);
-
-        brawler.attackRechargeUltimateAmount = toint(row[18], UNDEFINED);
-
-        brawler.ultimateRechargeUltimateAmount = toint(row[19], UNDEFINED);
+        brawler.weaponSkill = row["WeaponSkill"];
+        brawler.ultimateSkill = row["UltimateSkill"];
+        brawler.speed = toint(row["Speed"], UNDEFINED);
+        brawler.health = toint(row["Hitpoints"], UNDEFINED);
+        brawler.iconSWF = row["IconSWF"];
+        brawler.icon = row["IconExportName"];
+        brawler.pet = row["Pet"];
+        brawler.scale = toint(row["Scale"], UNDEFINED);
+        brawler.attackRechargeUltimateAmount = toint(row["UltiChargeMul"], UNDEFINED);
+        brawler.ultimateRechargeUltimateAmount = toint(row["UltiChargeUltiMul"], UNDEFINED);
 
         for (auto &skillsRow : skills.rows)
         {
@@ -69,7 +63,7 @@ Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charac
                     brawler.weaponTimeBetweenAttacks = toint(skillsRow[18], UNDEFINED);
                     brawler.attackDuration = toint(skillsRow[7], UNDEFINED);
                     brawler.weaponRange = toint(skillsRow[9], UNDEFINED);
-                    brawler.attackProjectile = skillsRow[skills.getColumnIndex("Projectile")];
+                    brawler.attackProjectile = skillsRow["Projectile"];
                 }
 
                 catch (const std::exception &e)
@@ -446,16 +440,27 @@ int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::stri
     auto cards = csv.readCSV(cardsCSVPath);
     auto skills = csv.readCSV(skillsCSVPath);
     auto texts = csv.readCSV(textsCSVPath);
-    int i = 0;
 
     for (auto row : characters.rows)
     {
         if (row["TID"] == tid)
         {
-
-        }
-        i++;
+            row["Name"] = brawler.codename;
+            row["TID"] = brawler.tid;
+            row["WeaponSkill"] = brawler.weaponSkill;
+            row["UltimateSkill"] = brawler.ultimateSkill;
+            row["Speed"] = brawler.speed;
+            row["Hitpoints"] = brawler.health;
+            row["IconSWF"] = brawler.iconSWF;
+            row["IconExportName"] = brawler.icon;
+            row["Pet"] = brawler.pet;
+            row["Scale"] = brawler.scale;
+            row["UltiChargeMul"] = brawler.attackRechargeUltimateAmount;
+            row["UltiChargeUltiMul"] = brawler.ultimateRechargeUltimateAmount;
+        }    
     }
+    
+    characters.writeCSV();
 
-    return i;
+    return 0;
 }
