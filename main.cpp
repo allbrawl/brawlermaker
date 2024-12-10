@@ -98,8 +98,8 @@ int main(int argc, char **argv)
             for (const auto &brawler : brawlers)
             {
                 printBrawler(brawler);
-                std::cout << "*************************" << "\n";
             }
+            std::cout << "*************************" << "\n";
         }
     }
     else
