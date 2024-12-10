@@ -13,7 +13,7 @@ void help()
     std::cout << "  edit                  - Edits an existing brawler's details by TID.\n\n";
     std::cout << "Arguments (for 'list' mode):\n";
     std::cout << "  [TID]                 - If provided, only the brawler with the specified TID will be listed.\n";
-    std::cout << "                         - If not provided, all brawlers will be listed.\n\n";
+    std::cout << "                        - If not provided, all brawlers will be listed.\n\n";
 }
 
 void printBrawler(const Brawler &brawler)
@@ -78,6 +78,7 @@ int main(int argc, char **argv)
             std::string brawlerTID = argv[2];
             auto brawler = handle.getBrawler(brawlerTID, "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
             printBrawler(brawler);
+            std::cout << "*************************" << std::endl;
         }
         else
         {
@@ -85,6 +86,7 @@ int main(int argc, char **argv)
             for (const auto &brawler : brawlers)
             {
                 printBrawler(brawler);
+                std::cout << "*************************" << std::endl;
             }
         }
     }
