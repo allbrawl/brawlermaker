@@ -52,14 +52,14 @@ Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charac
             {
                 try
                 {
-                    brawler.weaponReloadTime = toint(skillsRow[14], UNDEFINED);
-                    brawler.weaponAmmoCount = toint(skillsRow[15], UNDEFINED);
-                    brawler.weaponDamage = toint(skillsRow[16], UNDEFINED);
-                    brawler.attackSpread = toint(skillsRow[19], UNDEFINED);
-                    brawler.attackProjectileCount = toint(skillsRow[21], UNDEFINED);
-                    brawler.weaponTimeBetweenAttacks = toint(skillsRow[18], UNDEFINED);
-                    brawler.attackDuration = toint(skillsRow[7], UNDEFINED);
-                    brawler.weaponRange = toint(skillsRow[9], UNDEFINED);
+                    brawler.weaponReloadTime = toint(skillsRow["RechargeTime"], UNDEFINED);
+                    brawler.weaponAmmoCount = toint(skillsRow["MaxCharge"], UNDEFINED);
+                    brawler.weaponDamage = toint(skillsRow["Damage"], UNDEFINED);
+                    brawler.attackSpread = toint(skillsRow["Spread"], UNDEFINED);
+                    brawler.attackProjectileCount = toint(skillsRow["NumBulletsInOneAttack"], UNDEFINED);
+                    brawler.weaponTimeBetweenAttacks = toint(skillsRow["MsBetweenAttacks"], UNDEFINED);
+                    brawler.attackDuration = toint(skillsRow["ActiveTime"], UNDEFINED);
+                    brawler.weaponRange = toint(skillsRow["CastingRange"], UNDEFINED);
                     brawler.attackProjectile = skillsRow["Projectile"];
                 }
 
@@ -74,13 +74,12 @@ Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charac
                 try
                 {
 
-                    brawler.ultimateDamage = toint(skillsRow[16], UNDEFINED);
-                    brawler.ultimateSpread = toint(skillsRow[19], UNDEFINED);
-                    brawler.ultimateProjectileCount = 0;
-                    brawler.ultimateProjectileCount = toint(skillsRow[21], UNDEFINED);
-                    brawler.ultimateAttackDuration = toint(skillsRow[7], UNDEFINED);
+                    brawler.ultimateDamage = toint(skillsRow["Damage"], UNDEFINED);
+                    brawler.ultimateSpread = toint(skillsRow["Spread"], UNDEFINED);
+                    brawler.ultimateProjectileCount = toint(skillsRow["NumBulletsInOneAttack"], UNDEFINED);
+                    brawler.ultimateAttackDuration = toint(skillsRow["ActiveTime"], UNDEFINED);
                     brawler.summonedCharacter == skillsRow[skills.getColumnIndex("SummonedCharacter")];
-                    brawler.ultimateRange = toint(skillsRow[9], UNDEFINED);
+                    brawler.ultimateRange = toint(skillsRow["CastingRange"], UNDEFINED);
                     brawler.ultimateProjectile = skillsRow[skills.getColumnIndex("Projectile")];
                 }
                 catch (const std::exception &e)
@@ -190,15 +189,15 @@ int BrawlerMaker::addBrawler(const Brawler &brawler, std::string charactersCSVPa
     CSV csv;
     CSV characters(charactersCSVPath);
     Row newCharacter = {brawler.codename, "", "", "bull", brawler.codename + "Weapon", brawler.codename + "Ulti", "",
-                                             std::to_string(brawler.speed), std::to_string(brawler.health), "", "", "", "",
-                                             "", "", "", "12", "", std::to_string(brawler.attackRechargeUltimateAmount), std::to_string(brawler.ultimateRechargeUltimateAmount), "Hero", "", brawler.codename + "Default", "",
-                                             "", "",
-                                             "", "", "", "takedamage_gen", "death_shotgun_girl", "Gen_move_fx", "reload_shotgun_girl",
-                                             "No_ammo_shotgungirl", "Dry_fire_shotgungirl", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-                                             "", "", "30", "", "80", "80", "", "", "35", std::to_string(brawler.scale), "210", "284", "90", "175", "260", "", "", "", "-25",
-                                             "40", "120", "Medium", "-48", "", "450", "", "", brawler.tid, "", "sc/ui.sc",
-                                             "hero_icon_" + brawler.icon, "0", "human", "footstep", "25", "250", "200", "", "", "1", "3", "2", "", "", "", "",
-                                             "", "", "", "", "", "ShellyTutorial", "", "", "", "", "", "3", "3", "3"};
+                        std::to_string(brawler.speed), std::to_string(brawler.health), "", "", "", "",
+                        "", "", "", "12", "", std::to_string(brawler.attackRechargeUltimateAmount), std::to_string(brawler.ultimateRechargeUltimateAmount), "Hero", "", brawler.codename + "Default", "",
+                        "", "",
+                        "", "", "", "takedamage_gen", "death_shotgun_girl", "Gen_move_fx", "reload_shotgun_girl",
+                        "No_ammo_shotgungirl", "Dry_fire_shotgungirl", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+                        "", "", "30", "", "80", "80", "", "", "35", std::to_string(brawler.scale), "210", "284", "90", "175", "260", "", "", "", "-25",
+                        "40", "120", "Medium", "-48", "", "450", "", "", brawler.tid, "", "sc/ui.sc",
+                        "hero_icon_" + brawler.icon, "0", "human", "footstep", "25", "250", "200", "", "", "1", "3", "2", "", "", "", "",
+                        "", "", "", "", "", "ShellyTutorial", "", "", "", "", "", "3", "3", "3"};
     characters.rows.push_back(newCharacter);
     characters.writeCSV();
 
@@ -453,16 +452,34 @@ int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::stri
             row["Scale"] = brawler.scale;
             row["UltiChargeMul"] = brawler.attackRechargeUltimateAmount;
             row["UltiChargeUltiMul"] = brawler.ultimateRechargeUltimateAmount;
-        }    
+        }
     }
-    
+
     characters.writeCSV();
 
     for (auto row : skills.rows)
     {
         if (row["Name"] == brawler.weaponSkill)
         {
-            row["RechargeTime"] = brawler.weaponReloadTime;
+            row["RechargeTime"] = (brawler.weaponReloadTime == UNDEFINED) ? "" : std::to_string(brawler.weaponReloadTime);
+            row["MaxCharge"] = (brawler.weaponAmmoCount == UNDEFINED) ? "" : std::to_string(brawler.weaponAmmoCount);
+            row["Damage"] = (brawler.weaponDamage == UNDEFINED) ? "" : std::to_string(brawler.weaponDamage);
+            row["Spread"] = (brawler.attackSpread == UNDEFINED) ? "" : std::to_string(brawler.attackSpread);
+            row["NumBulletsInOneAttack"] = (brawler.attackProjectileCount == UNDEFINED) ? "" : std::to_string(brawler.attackProjectileCount);
+            row["MsBetweenAttacks"] = (brawler.weaponTimeBetweenAttacks == UNDEFINED) ? "" : std::to_string(brawler.weaponTimeBetweenAttacks);
+            row["ActiveTime"] = (brawler.attackDuration == UNDEFINED) ? "" : std::to_string(brawler.attackDuration);
+            row["CastingRange"] = (brawler.weaponRange == UNDEFINED) ? "" : std::to_string(brawler.weaponRange);
+            row["Projectile"] = brawler.attackProjectile;
+        }
+        else if (row["Name"] == brawler.ultimateSkill)
+        {
+            row["Damage"] = (brawler.weaponDamage == UNDEFINED) ? "" : std::to_string(brawler.weaponDamage);
+            row["Spread"] = (brawler.attackSpread == UNDEFINED) ? "" : std::to_string(brawler.attackSpread);
+            row["NumBulletsInOneAttack"] = (brawler.attackProjectileCount == UNDEFINED) ? "" : std::to_string(brawler.attackProjectileCount);
+            row["MsBetweenAttacks"] = (brawler.weaponTimeBetweenAttacks == UNDEFINED) ? "" : std::to_string(brawler.weaponTimeBetweenAttacks);
+            row["ActiveTime"] = (brawler.attackDuration == UNDEFINED) ? "" : std::to_string(brawler.attackDuration);
+            row["CastingRange"] = (brawler.weaponRange == UNDEFINED) ? "" : std::to_string(brawler.weaponRange);
+            row["Projectile"] = brawler.attackProjectile;
         }
     }
 
