@@ -90,7 +90,7 @@ Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charac
             }
         }
 
-        for (auto &cardsRow : cards.rows)
+        for (Row &cardsRow : cards.rows)
         {
             if (cardsRow["Target"] == brawler.codename)
             {
@@ -113,7 +113,7 @@ Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charac
             }
         }
 
-        for (auto &textsRow : texts.rows)
+        for (Row &textsRow : texts.rows)
         {
             if (textsRow[0] == brawler.tid)
             {
@@ -507,6 +507,38 @@ int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::stri
                     row["TID"] == brawler.ultimateTID;
                 }
             }
+        }
+    }
+
+    for (Row row : texts.rows)
+    {
+        if (row[0] == brawler.tid)
+        {
+            row[1] = brawler.name;
+        }
+        else if (row[0] == brawler.tid + "_DESC")
+        {
+            row[1] = brawler.description;
+        }
+        else if (row[0] == brawler.tid + "_SHORT_DESC")
+        {
+            row[1] = brawler.shortDescription;
+        }
+        else if (row[0] == brawler.weaponTID)
+        {
+            row[1] = brawler.weaponName;
+        }
+        else if (row[0] == brawler.ultimateTID)
+        {
+            row[1] = brawler.ultimateName;
+        }
+        else if (row[0] == brawler.weaponTID + "_DESC")
+        {
+            row[1] = brawler.weaponDescription;
+        }
+        else if (row[0] == brawler.ultimateTID + "_DESC")
+        {
+            row[1] = brawler.ultimateDescription;
         }
     }
 
