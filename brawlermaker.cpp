@@ -19,12 +19,11 @@ int toint(std::string s, int fallback)
 
 Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charactersCSVPath, const std::string cardsCSVPath, const std::string skillsCSVPath, const std::string textsCSVPath) const
 {
-    CSVHandler csv;
+    CSV characters(charactersCSVPath);
+    CSV cards(cardsCSVPath);
+    CSV skills(skillsCSVPath);
+    CSV texts(textsCSVPath);
     Brawler brawler;
-    auto characters = csv.readCSV(charactersCSVPath);
-    auto cards = csv.readCSV(cardsCSVPath);
-    auto skills = csv.readCSV(skillsCSVPath);
-    auto texts = csv.readCSV(textsCSVPath);
 
     for (auto &row : characters.rows)
     {
@@ -165,8 +164,7 @@ Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charac
 
 std::vector<Brawler> BrawlerMaker::getBrawlers(std::string charactersCSVPath, std::string cardsCSVPath, std::string skillsCSVPath, std::string textsCSVPath, bool ignoreNonHeros)
 {
-    CSVHandler csv;
-    auto characters = csv.readCSV(charactersCSVPath);
+    CSV characters(charactersCSVPath);
     std::vector<Brawler> brawlers;
     bool datatypes = true;
     for (auto row : characters.rows)
@@ -189,8 +187,8 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(std::string charactersCSVPath, st
 
 int BrawlerMaker::addBrawler(const Brawler &brawler, std::string charactersCSVPath, std::string cardsCSVPath, std::string skillsCSVPath, std::string textsCSVPath)
 {
-    CSVHandler csv;
-    CSV characters = csv.readCSV(charactersCSVPath);
+    CSV csv;
+    CSV characters(charactersCSVPath);
     Row newCharacter = {brawler.codename, "", "", "bull", brawler.codename + "Weapon", brawler.codename + "Ulti", "",
                                              std::to_string(brawler.speed), std::to_string(brawler.health), "", "", "", "",
                                              "", "", "", "12", "", std::to_string(brawler.attackRechargeUltimateAmount), std::to_string(brawler.ultimateRechargeUltimateAmount), "Hero", "", brawler.codename + "Default", "",
@@ -204,7 +202,7 @@ int BrawlerMaker::addBrawler(const Brawler &brawler, std::string charactersCSVPa
     characters.rows.push_back(newCharacter);
     characters.writeCSV();
 
-    CSV cards = csv.readCSV(cardsCSVPath);
+    CSV cards(cardsCSVPath);
     std::string rarity;
     if (brawler.rarity == Rarity::Rare)
     {
@@ -257,7 +255,7 @@ int BrawlerMaker::addBrawler(const Brawler &brawler, std::string charactersCSVPa
 
     cards.writeCSV();
 
-    auto skills = csv.readCSV(skillsCSVPath);
+    CSV skills(skillsCSVPath);
 
     std::vector<std::string> weaponSkill = {brawler.codename + "Weapon", "Attack", "true", "true", "true", "", "50", std::to_string(brawler.attackDuration), "",
                                             std::to_string(brawler.weaponRange), "", "",
@@ -279,7 +277,7 @@ int BrawlerMaker::addBrawler(const Brawler &brawler, std::string charactersCSVPa
 
     skills.writeCSV();
 
-    auto texts = csv.readCSV(textsCSVPath);
+    CSV texts(textsCSVPath);
 
     std::vector<std::string> brawlerName = {brawler.tid, brawler.name};
 
@@ -316,11 +314,10 @@ int BrawlerMaker::addBrawler(const Brawler &brawler, std::string charactersCSVPa
 
 int BrawlerMaker::removeBrawler(std::string tid, std::string charactersCSVPath, std::string cardsCSVPath, std::string skillsCSVPath, std::string textsCSVPath)
 {
-    CSVHandler csv;
-    auto characters = csv.readCSV(charactersCSVPath);
-    auto cards = csv.readCSV(cardsCSVPath);
-    auto skills = csv.readCSV(skillsCSVPath);
-    auto texts = csv.readCSV(textsCSVPath);
+    CSV characters(charactersCSVPath);
+    CSV cards(cardsCSVPath);
+    CSV skills(skillsCSVPath);
+    CSV texts(textsCSVPath);
 
     // Store weapon and ultimate skill as it is used when removing the brawler from texts.csv and skills.csv
     std::string weaponSkill;
@@ -330,11 +327,11 @@ int BrawlerMaker::removeBrawler(std::string tid, std::string charactersCSVPath, 
     // Remove character from characters.csv
     for (auto it = characters.rows.begin(); it != characters.rows.end();)
     {
-        if ((*it)[characters.getColumnIndex("TID")] == tid)
+        if ((*it)["TID"] == tid)
         {
             name = (*it)[0];
-            weaponSkill = (*it)[characters.getColumnIndex("WeaponSkill")];
-            ultimateSkill = (*it)[characters.getColumnIndex("UltimateSkill")];
+            weaponSkill = (*it)["WeaponSkill"];
+            ultimateSkill = (*it)["UltimateSkill"];
             it = characters.rows.erase(it);
         }
         else
@@ -349,11 +346,11 @@ int BrawlerMaker::removeBrawler(std::string tid, std::string charactersCSVPath, 
     // Remove from skills.csv
     for (auto it = skills.rows.begin(); it != skills.rows.end();)
     {
-        if ((*it)[skills.getColumnIndex("Name")] == weaponSkill)
+        if ((*it)["Name"] == weaponSkill)
         {
             it = skills.rows.erase(it);
         }
-        else if ((*it)[skills.getColumnIndex("Name")] == ultimateSkill)
+        else if ((*it)["Name"] == ultimateSkill)
         {
             it = skills.rows.erase(it);
         }
@@ -435,13 +432,12 @@ int BrawlerMaker::removeBrawler(std::string tid, std::string charactersCSVPath, 
 
 int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::string charactersCSVPath, std::string cardsCSVPath, std::string skillsCSVPath, std::string textsCSVPath)
 {
-    CSVHandler csv;
-    auto characters = csv.readCSV(charactersCSVPath);
-    auto cards = csv.readCSV(cardsCSVPath);
-    auto skills = csv.readCSV(skillsCSVPath);
-    auto texts = csv.readCSV(textsCSVPath);
+    CSV characters(charactersCSVPath);
+    CSV cards(cardsCSVPath);
+    CSV skills(skillsCSVPath);
+    CSV texts(textsCSVPath);
 
-    for (auto row : characters.rows)
+    for (Row row : characters.rows)
     {
         if (row["TID"] == tid)
         {
