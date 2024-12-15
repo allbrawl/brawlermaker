@@ -52,7 +52,6 @@ void printBrawler(const Brawler &brawler)
     std::cout << "weaponRange: " << (brawler.weaponRange == UNDEFINED ? "undefined" : std::to_string(brawler.weaponRange)) << "\n";
     std::cout << "ultimateRange: " << (brawler.ultimateRange == UNDEFINED ? "undefined" : std::to_string(brawler.ultimateRange)) << "\n";
     std::cout << "weaponReloadTime: " << (brawler.weaponReloadTime == UNDEFINED ? "undefined" : std::to_string(brawler.weaponReloadTime)) << "\n";
-    std::cout << "ultimateReloadTime: " << (brawler.ultimateReloadTime == UNDEFINED ? "undefined" : std::to_string(brawler.ultimateReloadTime)) << "\n";
     std::cout << "weaponAmmoCount: " << (brawler.weaponAmmoCount == UNDEFINED ? "undefined" : std::to_string(brawler.weaponAmmoCount)) << "\n";
     std::cout << "ultimateAmmoCount: " << (brawler.ultimateAmmoCount == UNDEFINED ? "undefined" : std::to_string(brawler.ultimateAmmoCount)) << "\n";
     std::cout << "weaponDamage: " << (brawler.weaponDamage == UNDEFINED ? "undefined" : std::to_string(brawler.weaponDamage)) << "\n";
@@ -79,28 +78,33 @@ int main(int argc, char **argv)
     if (argc <= 1)
     {
         help();
-        exit(1);
     }
-    if (!strcmp("list", argv[1]))
+    else if (!strcmp("list", argv[1]))
     {
-        BrawlerMaker handle;
+        BrawlerMaker bm;
 
         if (argc > 2)
         {
             std::string brawlerTID = argv[2];
-            auto brawler = handle.getBrawler(brawlerTID, "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
+            auto brawler = bm.getBrawler(brawlerTID, "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
             printBrawler(brawler);
             std::cout << "*************************" << "\n";
         }
         else
         {
-            auto brawlers = handle.getBrawlers("baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv", true);
+            auto brawlers = bm.getBrawlers("baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv", true);
             for (const auto &brawler : brawlers)
             {
                 printBrawler(brawler);
             }
             std::cout << "*************************" << "\n";
         }
+    }
+    else if (!strcmp("remove", argv[1]) and argc > 2)
+    {
+        BrawlerMaker bm;
+
+        bm.removeBrawler(argv[2], "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
     }
     else
     {

@@ -50,7 +50,6 @@ public:
     int weaponRange;
     int ultimateRange;
     int weaponReloadTime;
-    int ultimateReloadTime;
     int weaponAmmoCount;
     int ultimateAmmoCount;
     int weaponDamage;
@@ -66,6 +65,10 @@ public:
     int attackRechargeUltimateAmount;
     int ultimateRechargeUltimateAmount;
     int number;
+    /*TODO
+    int attackCooldown;
+    int ultimateCooldown;
+    */
     std::string attackProjectile;
     std::string ultimateProjectile;
     std::string weaponTID;
@@ -85,9 +88,9 @@ public:
         : tid(tid), name(name), codename(codename), description(description), shortDescription(shortDescription), weaponTID(weaponTID), ultimateTID(ultimateTID),
           weaponName(weaponName), ultimateName(ultimateName), weaponSkill(weaponSkill), ultimateSkill(ultimateSkill),
           speed(speed), health(health), iconSWF(iconSWF), icon(icon), pet(pet), summonedCharacter(summonedCharacter),
-          scale(scale), weaponRange(range), ultimateRange(ultimateRange), weaponReloadTime(weaponReloadTime), ultimateReloadTime(ultimateReloadTime),
+          scale(scale), weaponRange(range), ultimateRange(ultimateRange), weaponReloadTime(weaponReloadTime),
           weaponAmmoCount(weaponAmmoCount), ultimateAmmoCount(ultimateAmmoCount), weaponDamage(weaponDamage), ultimateDamage(ultimateDamage), attackSpread(attackSpread),
           ultimateSpread(ultimateSpread), attackProjectileCount(attackProjectileCount), ultimateProjectileCount(ultimateProjectileCount), weaponTimeBetweenAttacks(weaponTimeBetweenAttacks), ultimateTimeBetweenAttacks(ultimateTimeBetweenAttacks), attackDuration(attackDuration), ultimateAttackDuration(ultimateAttackDuration), attackRechargeUltimateAmount(attackRechargeUltimateAmount), ultimateRechargeUltimateAmount(ultimateRechargeUltimateAmount), number(number), attackProjectile(attackProjectile), ultimateProjectile(ultimateProjectile), rarity(rarity), weaponDescription(weaponDescription), ultimateDescription(ultimateDescription) {};
-    Brawler() : tid(""), name(""), codename(""), description(""), shortDescription(""), weaponTID(""), ultimateTID(""), weaponName(""), ultimateName(""), rarity(Rarity::TrophyRoad), weaponDescription(""), ultimateDescription(""), weaponSkill(""), ultimateSkill(""), speed(0), health(0), iconSWF(""), icon(""), pet(""), summonedCharacter(""), scale(0), weaponRange(0), ultimateRange(0), weaponReloadTime(0), ultimateReloadTime(0), weaponAmmoCount(0), ultimateAmmoCount(0), weaponDamage(0), ultimateDamage(0), attackSpread(0), ultimateSpread(0), attackProjectileCount(0), ultimateProjectileCount(0), weaponTimeBetweenAttacks(0), ultimateTimeBetweenAttacks(0), attackDuration(0), ultimateAttackDuration(0), attackRechargeUltimateAmount(0), ultimateRechargeUltimateAmount(0), number(0), attackProjectile(""), ultimateProjectile("") {}
+    Brawler() : tid(""), name(""), codename(""), description(""), shortDescription(""), weaponTID(""), ultimateTID(""), weaponName(""), ultimateName(""), rarity(Rarity::TrophyRoad), weaponDescription(""), ultimateDescription(""), weaponSkill(""), ultimateSkill(""), speed(0), health(0), iconSWF(""), icon(""), pet(""), summonedCharacter(""), scale(0), weaponRange(0), ultimateRange(0), weaponReloadTime(0), weaponAmmoCount(0), ultimateAmmoCount(0), weaponDamage(0), ultimateDamage(0), attackSpread(0), ultimateSpread(0), attackProjectileCount(0), ultimateProjectileCount(0), weaponTimeBetweenAttacks(0), ultimateTimeBetweenAttacks(0), attackDuration(0), ultimateAttackDuration(0), attackRechargeUltimateAmount(0), ultimateRechargeUltimateAmount(0), number(0), attackProjectile(""), ultimateProjectile("") {}
 };
 #endif
