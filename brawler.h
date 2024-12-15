@@ -72,8 +72,7 @@ public:
     std::string attackProjectile;
     std::string ultimateProjectile;
     std::string weaponTID;
-    std::string ultimateTID; 
-
+    std::string ultimateTID;
 
     Brawler(const std::string &tid, const std::string &name, const std::string &codename, const std::string &description, const std::string &shortDescription, const std::string &weaponTID, std::string &ultimateTID,
             const std::string &weaponName, const std::string &ultimateName,

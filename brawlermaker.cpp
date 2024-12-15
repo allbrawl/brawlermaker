@@ -92,34 +92,22 @@ Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charac
 
         for (auto &cardsRow : cards.rows)
         {
-            if (cardsRow[3] == brawler.codename)
+            if (cardsRow["Target"] == brawler.codename)
             {
-                if (cardsRow[cards.getColumnIndex("Type")] == "unlock")
+                if (cardsRow["Type"] == "unlock")
                 {
-                    brawler.number = toint(cardsRow[cards.getColumnIndex("SortOrder")], UNDEFINED);
-                    const std::string csvRarity = cardsRow[13];
-                    if (csvRarity == "common")
-                        brawler.rarity = Rarity::TrophyRoad;
-                    else if (csvRarity == "rare")
-                        brawler.rarity = Rarity::Rare;
-                    else if (csvRarity == "super_rare")
-                        brawler.rarity = Rarity::SuperRare;
-                    else if (csvRarity == "epic")
-                        brawler.rarity = Rarity::Epic;
-                    else if (csvRarity == "mega_epic")
-                        brawler.rarity = Rarity::Mythic;
-                    else if (csvRarity == "legendary")
-                        brawler.rarity = Rarity::Legendary;
+                    brawler.number = toint(cardsRow["SortOrder"], UNDEFINED);
+                    const std::string csvRarity = cardsRow["Rarity"];
                 }
-                else if (cardsRow[cards.getColumnIndex("Type")] == "skill")
+                else if (cardsRow["Type"] == "skill")
                 {
-                    if (cardsRow[cards.getColumnIndex("Skill")] == brawler.weaponSkill)
+                    if (cardsRow["Skill"] == brawler.weaponSkill)
                     {
-                        brawler.weaponTID = cardsRow[cards.getColumnIndex("TID")];
+                        brawler.weaponTID = cardsRow["TID"];
                     }
-                    else if (cardsRow[cards.getColumnIndex("Skill")] == brawler.ultimateSkill)
+                    else if (cardsRow["Skill"] == brawler.ultimateSkill)
                     {
-                        brawler.ultimateTID = cardsRow[cards.getColumnIndex("TID")];
+                        brawler.ultimateTID = cardsRow["TID"];
                     }
                 }
             }
@@ -166,7 +154,7 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(std::string charactersCSVPath, st
     CSV characters(charactersCSVPath);
     std::vector<Brawler> brawlers;
     bool datatypes = true;
-    for (auto row : characters.rows)
+    for (Row row : characters.rows)
     {
         if (datatypes)
         {
@@ -457,7 +445,7 @@ int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::stri
 
     characters.writeCSV();
 
-    for (auto row : skills.rows)
+    for (Row row : skills.rows)
     {
         if (row["Name"] == brawler.weaponSkill)
         {
@@ -480,6 +468,45 @@ int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::stri
             row["ActiveTime"] = (brawler.attackDuration == UNDEFINED) ? "" : std::to_string(brawler.attackDuration);
             row["CastingRange"] = (brawler.weaponRange == UNDEFINED) ? "" : std::to_string(brawler.weaponRange);
             row["Projectile"] = brawler.attackProjectile;
+        }
+    }
+
+    for (Row row : cards.rows)
+    {
+        if (row["Target"] == brawler.codename)
+        {
+            if (row["Type"] == "unlock")
+            {
+                row["SortOrder"] = brawler.number;
+                std::string rarityStr;
+                switch (brawler.rarity)
+                {
+                case Rarity::TrophyRoad:
+                    rarityStr = "common";
+                case Rarity::Rare:
+                    rarityStr = "rare";
+                case Rarity::SuperRare:
+                    rarityStr = "super_rare";
+                case Rarity::Epic:
+                    rarityStr = "epic";
+                case Rarity::Mythic:
+                    rarityStr = "mega_epic";
+                case Rarity::Legendary:
+                    rarityStr = "legendary";
+                }
+                row["Rarity"] == rarityStr;
+            }
+            else if (row["Type"] == "skill")
+            {
+                if (row["Skill"] == brawler.weaponSkill)
+                {
+                    row["TID"] == brawler.weaponTID;
+                }
+                else if (row["Skill"] == brawler.ultimateSkill)
+                {
+                    row["TID"] == brawler.ultimateTID;
+                }
+            }
         }
     }
 

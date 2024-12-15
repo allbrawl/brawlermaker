@@ -86,13 +86,13 @@ int main(int argc, char **argv)
         if (argc > 2)
         {
             std::string brawlerTID = argv[2];
-            auto brawler = bm.getBrawler(brawlerTID, "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
+            Brawler brawler = bm.getBrawler(brawlerTID, "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
             printBrawler(brawler);
             std::cout << "*************************" << "\n";
         }
         else
         {
-            auto brawlers = bm.getBrawlers("baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv", true);
+            std::vector<Brawler> brawlers = bm.getBrawlers("baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv", true);
             for (const auto &brawler : brawlers)
             {
                 printBrawler(brawler);
