@@ -232,7 +232,7 @@ int BrawlerMaker::addBrawler(const Brawler &brawler, std::string charactersCSVPa
 
     CSV skills(skillsCSVPath);
 
-    std::vector<std::string> weaponSkill = {brawler.codename + "Weapon", "Attack", "true", "true", "true", "", "50", brawler.attackDuration, "",
+    std::vector<std::string> weaponSkill = {brawler.codename + "Weapon", "Attack", "true", "true", "true", "", brawler.attackCooldown, brawler.attackDuration, "",
                                             brawler.weaponRange, "", "",
                                             "", "", brawler.weaponReloadTime, brawler.weaponAmmoCount, brawler.weaponDamage, "", brawler.weaponTimeBetweenAttacks,
                                             brawler.attackSpread, "", brawler.attackProjectileCount, "",
@@ -241,7 +241,7 @@ int BrawlerMaker::addBrawler(const Brawler &brawler, std::string charactersCSVPa
 
     skills.rows.push_back(weaponSkill);
 
-    std::vector<std::string> ultimateSkill = {brawler.codename + "Ulti", "Attack", "true", "true", "true", "", "50", brawler.ultimateAttackDuration, "",
+    std::vector<std::string> ultimateSkill = {brawler.codename + "Ulti", "Attack", "true", "true", "true", "", brawler.ultimateCooldown, brawler.ultimateAttackDuration, "",
                                               brawler.ultimateRange, "", "",
                                               "", "", "", "", brawler.ultimateDamage, "", brawler.ultimateTimeBetweenAttacks, brawler.ultimateSpread, "",
                                               brawler.ultimateProjectileCount, "",
@@ -428,6 +428,7 @@ int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::stri
             row["Scale"] = brawler.scale;
             row["UltiChargeMul"] = brawler.attackRechargeUltimateAmount;
             row["UltiChargeUltiMul"] = brawler.ultimateRechargeUltimateAmount;
+            row["DefaultSkin"] = brawler.defaultSkin;
         }
     }
 
@@ -446,6 +447,7 @@ int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::stri
             row["ActiveTime"] = brawler.attackDuration;
             row["CastingRange"] = brawler.weaponRange;
             row["Projectile"] = brawler.attackProjectile;
+            row["Cooldown"] = brawler.attackCooldown;
         }
         else if (row["Name"] == brawler.ultimateSkill)
         {
@@ -456,6 +458,7 @@ int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::stri
             row["ActiveTime"] = brawler.attackDuration;
             row["CastingRange"] = brawler.weaponRange;
             row["Projectile"] = brawler.attackProjectile;
+            row["Cooldown"] = brawler.ultimateCooldown;
         }
     }
 
