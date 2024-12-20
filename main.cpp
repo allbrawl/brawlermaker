@@ -42,31 +42,31 @@ void printBrawler(const Brawler &brawler)
 
     std::cout << "weaponSkill: " << brawler.weaponSkill << "\n";
     std::cout << "ultimateSkill: " << brawler.ultimateSkill << "\n";
-    std::cout << "speed: " << (brawler.speed == UNDEFINED ? "undefined" : std::to_string(brawler.speed)) << "\n";
-    std::cout << "health: " << (brawler.health == UNDEFINED ? "undefined" : std::to_string(brawler.health)) << "\n";
+    std::cout << "speed: " << brawler.speed << "\n";
+    std::cout << "health: " << brawler.health << "\n";
     std::cout << "iconSWF: " << brawler.iconSWF << "\n";
     std::cout << "icon: " << brawler.icon << "\n";
     std::cout << "pet: " << brawler.pet << "\n";
     std::cout << "summonedCharacter: " << brawler.summonedCharacter << "\n";
-    std::cout << "scale: " << (brawler.scale == UNDEFINED ? "undefined" : std::to_string(brawler.scale)) << "\n";
-    std::cout << "weaponRange: " << (brawler.weaponRange == UNDEFINED ? "undefined" : std::to_string(brawler.weaponRange)) << "\n";
-    std::cout << "ultimateRange: " << (brawler.ultimateRange == UNDEFINED ? "undefined" : std::to_string(brawler.ultimateRange)) << "\n";
-    std::cout << "weaponReloadTime: " << (brawler.weaponReloadTime == UNDEFINED ? "undefined" : std::to_string(brawler.weaponReloadTime)) << "\n";
-    std::cout << "weaponAmmoCount: " << (brawler.weaponAmmoCount == UNDEFINED ? "undefined" : std::to_string(brawler.weaponAmmoCount)) << "\n";
-    std::cout << "ultimateAmmoCount: " << (brawler.ultimateAmmoCount == UNDEFINED ? "undefined" : std::to_string(brawler.ultimateAmmoCount)) << "\n";
-    std::cout << "weaponDamage: " << (brawler.weaponDamage == UNDEFINED ? "undefined" : std::to_string(brawler.weaponDamage)) << "\n";
-    std::cout << "ultimateDamage: " << (brawler.ultimateDamage == UNDEFINED ? "undefined" : std::to_string(brawler.ultimateDamage)) << "\n";
-    std::cout << "attackSpread: " << (brawler.attackSpread == UNDEFINED ? "undefined" : std::to_string(brawler.attackSpread)) << "\n";
-    std::cout << "ultimateSpread: " << (brawler.ultimateSpread == UNDEFINED ? "undefined" : std::to_string(brawler.ultimateSpread)) << "\n";
-    std::cout << "attackProjectileCount: " << (brawler.attackProjectileCount == UNDEFINED ? "undefined" : std::to_string(brawler.attackProjectileCount)) << "\n";
-    std::cout << "ultimateProjectileCount: " << (brawler.ultimateProjectileCount == UNDEFINED ? "undefined" : std::to_string(brawler.ultimateProjectileCount)) << "\n";
-    std::cout << "weaponTimeBetweenAttacks: " << (brawler.weaponTimeBetweenAttacks == UNDEFINED ? "undefined" : std::to_string(brawler.weaponTimeBetweenAttacks)) << "\n";
-    std::cout << "ultimateTimeBetweenAttacks: " << (brawler.ultimateTimeBetweenAttacks == UNDEFINED ? "undefined" : std::to_string(brawler.ultimateTimeBetweenAttacks)) << "\n";
-    std::cout << "attackDuration: " << (brawler.attackDuration == UNDEFINED ? "undefined" : std::to_string(brawler.attackDuration)) << "\n";
-    std::cout << "ultimateAttackDuration: " << (brawler.ultimateAttackDuration == UNDEFINED ? "undefined" : std::to_string(brawler.ultimateAttackDuration)) << "\n";
-    std::cout << "attackRechargeUltimateAmount: " << (brawler.attackRechargeUltimateAmount == UNDEFINED ? "undefined" : std::to_string(brawler.attackRechargeUltimateAmount)) << "\n";
-    std::cout << "ultimateRechargeUltimateAmount: " << (brawler.ultimateRechargeUltimateAmount == UNDEFINED ? "undefined" : std::to_string(brawler.ultimateRechargeUltimateAmount)) << "\n";
-    std::cout << "number: " << (brawler.number == UNDEFINED ? "undefined" : std::to_string(brawler.number)) << "\n";
+    std::cout << "scale: " << brawler.scale << "\n";
+    std::cout << "weaponRange: " << brawler.weaponRange << "\n";
+    std::cout << "ultimateRange: " << brawler.ultimateRange << "\n";
+    std::cout << "weaponReloadTime: " << brawler.weaponReloadTime << "\n";
+    std::cout << "weaponAmmoCount: " << brawler.weaponAmmoCount << "\n";
+    std::cout << "ultimateAmmoCount: " << brawler.ultimateAmmoCount << "\n";
+    std::cout << "weaponDamage: " << brawler.weaponDamage << "\n";
+    std::cout << "ultimateDamage: " << brawler.ultimateDamage << "\n";
+    std::cout << "attackSpread: " << brawler.attackSpread << "\n";
+    std::cout << "ultimateSpread: " << brawler.ultimateSpread << "\n";
+    std::cout << "attackProjectileCount: " << brawler.attackProjectileCount << "\n";
+    std::cout << "ultimateProjectileCount: " << brawler.ultimateProjectileCount << "\n";
+    std::cout << "weaponTimeBetweenAttacks: " << brawler.weaponTimeBetweenAttacks << "\n";
+    std::cout << "ultimateTimeBetweenAttacks: " << brawler.ultimateTimeBetweenAttacks << "\n";
+    std::cout << "attackDuration: " << brawler.attackDuration << "\n";
+    std::cout << "ultimateAttackDuration: " << brawler.ultimateAttackDuration << "\n";
+    std::cout << "attackRechargeUltimateAmount: " << brawler.attackRechargeUltimateAmount << "\n";
+    std::cout << "ultimateRechargeUltimateAmount: " << brawler.ultimateRechargeUltimateAmount << "\n";
+    std::cout << "number: " << brawler.number << "\n";
     std::cout << "attackProjectile: " << brawler.attackProjectile << "\n";
     std::cout << "ultimateProjectile: " << brawler.ultimateProjectile << "\n";
     std::cout << "weaponTID: " << brawler.weaponTID << "\n";
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 
         if (argc > 2)
         {
-            std::string brawlerTID = argv[2];
+            const char *brawlerTID = argv[2];
             Brawler brawler = bm.getBrawler(brawlerTID, "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
             printBrawler(brawler);
             std::cout << "*************************" << "\n";
@@ -100,7 +100,7 @@ int main(int argc, char **argv)
             std::cout << "*************************" << "\n";
         }
     }
-    else if (!strcmp("remove", argv[1]) and argc > 2)
+    else if (!strcmp("remove", argv[1]) && argc > 2)
     {
         BrawlerMaker bm;
 
