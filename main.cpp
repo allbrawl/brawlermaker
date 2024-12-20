@@ -7,13 +7,10 @@ void help()
 {
     std::cout << "Usage: brawlermaker <mode> [arguments]\n\n";
     std::cout << "Modes:\n";
-    std::cout << "  list                  - Lists all brawlers or a specific brawler if TID is provided.\n";
-    std::cout << "  add                   - Adds a new brawler to the CSV files.\n";
-    std::cout << "  remove                - Removes a brawler by TID from the CSV files.\n";
-    std::cout << "  edit                  - Edits an existing brawler's details by TID.\n\n";
-    std::cout << "Arguments (for 'list' mode):\n";
-    std::cout << "  [TID]                 - If provided, only the brawler with the specified TID will be listed.\n";
-    std::cout << "                        - If not provided, all brawlers will be listed.\n\n";
+    std::cout << "  list [TID]                 - Lists all brawlers or a specific brawler if TID is provided.\n";
+    std::cout << "  add                        - Adds a new brawler to the CSV files.\n";
+    std::cout << "  remove <TID>               - Removes a brawler by TID from the CSV files.\n";
+    std::cout << "  edit <TID> <field>=<value> - Edits an existing brawler's details by TID.\n\n";
 }
 
 void printBrawler(const Brawler &brawler)
@@ -67,10 +64,13 @@ void printBrawler(const Brawler &brawler)
     std::cout << "attackRechargeUltimateAmount: " << brawler.attackRechargeUltimateAmount << "\n";
     std::cout << "ultimateRechargeUltimateAmount: " << brawler.ultimateRechargeUltimateAmount << "\n";
     std::cout << "number: " << brawler.number << "\n";
+    std::cout << "attackCooldown: " << brawler.attackCooldown << "\n";
+    std::cout << "ultimateCooldown:" << brawler.ultimateCooldown << "\n";
     std::cout << "attackProjectile: " << brawler.attackProjectile << "\n";
     std::cout << "ultimateProjectile: " << brawler.ultimateProjectile << "\n";
     std::cout << "weaponTID: " << brawler.weaponTID << "\n";
     std::cout << "ultimateTID: " << brawler.ultimateTID << "\n";
+    std::cout << "defaultSkin: " << brawler.defaultSkin << "\n";
 }
 
 int main(int argc, char **argv)

@@ -33,6 +33,7 @@ Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charac
         brawler.scale = row["Scale"];
         brawler.attackRechargeUltimateAmount = row["UltiChargeMul"];
         brawler.ultimateRechargeUltimateAmount = row["UltiChargeUltiMul"];
+        brawler.defaultSkin = row["DefaultSkin"];
 
         for (auto &skillsRow : skills.rows)
         {
@@ -49,6 +50,7 @@ Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charac
                     brawler.attackDuration = skillsRow["ActiveTime"];
                     brawler.weaponRange = skillsRow["CastingRange"];
                     brawler.attackProjectile = skillsRow["Projectile"];
+                    brawler.attackCooldown = skillsRow["Cooldown"];
                 }
 
                 catch (const std::exception &e)
@@ -66,9 +68,10 @@ Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charac
                     brawler.ultimateSpread = skillsRow["Spread"];
                     brawler.ultimateProjectileCount = skillsRow["NumBulletsInOneAttack"];
                     brawler.ultimateAttackDuration = skillsRow["ActiveTime"];
-                    brawler.summonedCharacter == skillsRow[skills.getColumnIndex("SummonedCharacter")];
+                    brawler.summonedCharacter == skillsRow["SummonedCharacter"];
                     brawler.ultimateRange = skillsRow["CastingRange"];
-                    brawler.ultimateProjectile = skillsRow[skills.getColumnIndex("Projectile")];
+                    brawler.ultimateProjectile = skillsRow["Projectile"];
+                    brawler.ultimateCooldown = skillsRow["Cooldown"];
                 }
                 catch (const std::exception &e)
                 {
