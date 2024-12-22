@@ -5,12 +5,14 @@
 
 void help()
 {
+    std::cout << "Brawlermaker Utility\n";
     std::cout << "Usage: brawlermaker <mode> [arguments]\n\n";
     std::cout << "Modes:\n";
-    std::cout << "  list [TID]                 - Lists all brawlers or a specific brawler if TID is provided.\n";
-    std::cout << "  add                        - Adds a new brawler to the CSV files.\n";
-    std::cout << "  remove <TID>               - Removes a brawler by TID from the CSV files.\n";
-    std::cout << "  edit <TID> <field>=<value> - Edits an existing brawler's details by TID.\n\n";
+    std::cout << "  list [TID]                       Lists all brawlers or details of a specific brawler if TID is provided.\n";
+    std::cout << "  add                              Adds a new brawler to the CSV files.\n";
+    std::cout << "  remove <TID>                     Removes a brawler by TID from the CSV files.\n";
+    std::cout << "  edit <TID> <field>=<value>       Modifies the details of an existing brawler by TID.\n";
+    std::cout << "  clone <original TID> <copy tid>  Creates a duplicate of an existing brawler with a new TID.\n";
 }
 
 void printBrawler(const Brawler &brawler)
@@ -73,6 +75,16 @@ void printBrawler(const Brawler &brawler)
     std::cout << "defaultSkin: " << brawler.defaultSkin << "\n";
 }
 
+std::string tolower(std::string text)
+{
+    std::string result = text;
+    for (char &c : result)
+    {
+        c = std::tolower(c);
+    }
+    return result;
+}
+
 int main(int argc, char **argv)
 {
     if (argc <= 1)
@@ -105,6 +117,143 @@ int main(int argc, char **argv)
         BrawlerMaker bm;
 
         bm.removeBrawler(argv[2], "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
+    }
+    else if (!strcmp("edit", argv[1]) && argc > 3)
+    {
+        BrawlerMaker bm;
+
+        std::string tid = argv[2];
+        std::string fieldValuePair = argv[3];
+
+        size_t separatorPos = fieldValuePair.find('=');
+        if (separatorPos == std::string::npos)
+        {
+            std::cerr << "Invalid field=value format." << std::endl;
+            return 1;
+        }
+
+        std::string field = fieldValuePair.substr(0, separatorPos);
+        std::string value = fieldValuePair.substr(separatorPos + 1);
+        field = tolower(field);
+
+        Brawler brawler = bm.getBrawler(tid, "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
+        if (field == "tid")
+            brawler.tid = value;
+        else if (field == "name")
+            brawler.name = value;
+        else if (field == "codename")
+            brawler.codename = value;
+        else if (field == "description")
+            brawler.description = value;
+        else if (field == "shortdescription")
+            brawler.shortDescription = value;
+        else if (field == "weaponname")
+            brawler.weaponName = value;
+        else if (field == "ultimatename")
+            brawler.ultimateName = value;
+        else if (field == "weapondescription")
+            brawler.weaponDescription = value;
+        else if (field == "ultimatedescription")
+            brawler.ultimateDescription = value;
+        else if (field == "rarity")
+        {
+            if (tolower(value) == "trophyroad")
+                brawler.rarity = Rarity::TrophyRoad;
+            else if (tolower(value) == "rare")
+                brawler.rarity = Rarity::Rare;
+            else if (tolower(value) == "superrare")
+                brawler.rarity = Rarity::SuperRare;
+            else if (tolower(value) == "epic")
+                brawler.rarity = Rarity::Epic;
+            else if (tolower(value) == "mythic")
+                brawler.rarity = Rarity::Mythic;
+            else if (tolower(tolower(value)) == "legendary")
+                brawler.rarity = Rarity::Legendary;
+            else
+            {
+                std::cerr << "Invalid rarity value." << std::endl;
+                return 1;
+            }
+        }
+        else if (field == "weaponskill")
+            brawler.weaponSkill = value;
+        else if (field == "ultimateskill")
+            brawler.ultimateSkill = value;
+        else if (field == "speed")
+            brawler.speed = value;
+        else if (field == "health")
+            brawler.health = value;
+        else if (field == "iconswf")
+            brawler.iconSWF = value;
+        else if (field == "icon")
+            brawler.icon = value;
+        else if (field == "pet")
+            brawler.pet = value;
+        else if (field == "summonedcharacter")
+            brawler.summonedCharacter = value;
+        else if (field == "scale")
+            brawler.scale = value;
+        else if (field == "weaponrange")
+            brawler.weaponRange = value;
+        else if (field == "ultimaterange")
+            brawler.ultimateRange = value;
+        else if (field == "weaponreloadtime")
+            brawler.weaponReloadTime = value;
+        else if (field == "weaponammocount")
+            brawler.weaponAmmoCount = value;
+        else if (field == "ultimateammocount")
+            brawler.ultimateAmmoCount = value;
+        else if (field == "weapondamage")
+            brawler.weaponDamage = value;
+        else if (field == "ultimatedamage")
+            brawler.ultimateDamage = value;
+        else if (field == "attackspread")
+            brawler.attackSpread = value;
+        else if (field == "ultimatespread")
+            brawler.ultimateSpread = value;
+        else if (field == "attackprojectilecount")
+            brawler.attackProjectileCount = value;
+        else if (field == "ultimateprojectilecount")
+            brawler.ultimateProjectileCount = value;
+        else if (field == "weapontimebetweenattacks")
+            brawler.weaponTimeBetweenAttacks = value;
+        else if (field == "ultimatetimeBetweenattacks")
+            brawler.ultimateTimeBetweenAttacks = value;
+        else if (field == "attackduration")
+            brawler.attackDuration = value;
+        else if (field == "ultimateattackduration")
+            brawler.ultimateAttackDuration = value;
+        else if (field == "attackrechargeultimateamount")
+            brawler.attackRechargeUltimateAmount = value;
+        else if (field == "ultimaterechargeultimateamount")
+            brawler.ultimateRechargeUltimateAmount = value;
+        else if (field == "number")
+            brawler.number = value;
+        else if (field == "attackcooldown")
+            brawler.attackCooldown = value;
+        else if (field == "ultimatecooldown")
+            brawler.ultimateCooldown = value;
+        else if (field == "attackprojectile")
+            brawler.attackProjectile = value;
+        else if (field == "ultimateprojectile")
+            brawler.ultimateProjectile = value;
+        else if (field == "weapontID")
+            brawler.weaponTID = value;
+        else if (field == "ultimatetid")
+            brawler.ultimateTID = value;
+        else if (field == "defaultskin")
+            brawler.defaultSkin = value;
+        else
+        {
+            std::cerr << "Field not recognized." << std::endl;
+            return 1;
+        }
+        int result = bm.editBrawler(tid, brawler, "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
+
+        if (result == 0)
+            std::cout << "Brawler successfully updated." << std::endl;
+        else
+            std::cerr << "Failed to update brawler." << std::endl;
     }
     else
     {
