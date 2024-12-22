@@ -465,6 +465,8 @@ int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::stri
         }
     }
 
+    skills.writeCSV();
+
     for (Row row : cards.rows)
     {
         if (row["Target"] == brawler.codename)
@@ -504,6 +506,8 @@ int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::stri
         }
     }
 
+    cards.writeCSV();
+
     for (Row row : texts.rows)
     {
         if (row[0] == brawler.tid)
@@ -535,6 +539,8 @@ int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::stri
             row[1] = brawler.ultimateDescription;
         }
     }
+
+    texts.writeCSV();
 
     return 0;
 }
