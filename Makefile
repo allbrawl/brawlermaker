@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -c
+CFLAGS = -c -g
 LDFLAGS = -lbrawlermaker
 TARGET_LIB = libbrawlermaker.a
 INCLUDE_DIR = /usr/include
