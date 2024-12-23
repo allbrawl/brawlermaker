@@ -145,7 +145,7 @@ std::vector<Brawler> BrawlerMaker::getBrawlers(std::string charactersCSVPath, st
     CSV characters(charactersCSVPath);
     std::vector<Brawler> brawlers;
     bool datatypes = true;
-    for (Row row : characters.rows)
+    for (Row &row : characters.rows)
     {
         if (datatypes)
         {
@@ -415,7 +415,7 @@ int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::stri
     CSV skills(skillsCSVPath);
     CSV texts(textsCSVPath);
 
-    for (Row row : characters.rows)
+    for (Row &row : characters.rows)
     {
         if (row["TID"] == tid)
         {
@@ -437,7 +437,7 @@ int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::stri
 
     characters.writeCSV();
 
-    for (Row row : skills.rows)
+    for (Row &row : skills.rows)
     {
         if (row["Name"] == brawler.weaponSkill)
         {
@@ -467,7 +467,7 @@ int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::stri
 
     skills.writeCSV();
 
-    for (Row row : cards.rows)
+    for (Row &row : cards.rows)
     {
         if (row["Target"] == brawler.codename)
         {
@@ -508,7 +508,7 @@ int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::stri
 
     cards.writeCSV();
 
-    for (Row row : texts.rows)
+    for (Row &row : texts.rows)
     {
         if (row[0] == brawler.tid)
         {
