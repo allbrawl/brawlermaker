@@ -551,7 +551,7 @@ int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::stri
     return 0;
 }
 
-int BrawlerMaker::cloneBrawler(std::string tid, std::string newName, std::string newTID, std::string newWeaponName, std::string newUltimateName, std::string charactersCSVPath, std::string cardsCSVPath, std::string skillsCSVPath, std::string textsCSVPath)
+int BrawlerMaker::cloneBrawler(std::string tid, std::string newTID, std::string newName, std::string newWeaponName, std::string newUltimateName, std::string charactersCSVPath, std::string cardsCSVPath, std::string skillsCSVPath, std::string textsCSVPath)
 {
     CSV characters(charactersCSVPath);
     CSV cards(cardsCSVPath);
@@ -565,6 +565,7 @@ int BrawlerMaker::cloneBrawler(std::string tid, std::string newName, std::string
             Row newRow = row;
             newRow["TID"] = newTID;
             newRow["Name"] = newName;
+            newRow["ItemName"] = newName;
             characters.rows.push_back(newRow);
             break;
         }
