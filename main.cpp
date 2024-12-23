@@ -1,12 +1,16 @@
-#include <brawlermaker.h>
+#include "brawlermaker.h"
 #include <iostream>
+#ifndef WINDOWS_H
 #include <csv.h>
+#else
+#include "csv.h"
+#endif
 #include <cstring>
 
 void help()
 {
     std::cout << "Brawlermaker Utility\n";
-    std::cout << "Usage: brawlermaker <mode> [arguments]\n\n";
+    std::cout << "Usage: brawlermaker <csv path> <mode> [arguments]\n\n";
     std::cout << "Modes:\n";
     std::cout << "  list [TID]                                  Lists all brawlers or details of a specific brawler if TID is provided.\n";
     std::cout << "  add                                         Adds a new brawler to the CSV files.\n";
@@ -87,21 +91,20 @@ std::string tolower(std::string text)
 
 int main(int argc, char **argv)
 {
-    if (argc <= 1)
+    if (argc <= 2)
     {
         help();
     }
-    else if (!strcmp("list", argv[1]))
+    else if (!strcmp("list", argv[2]))
     {
         BrawlerMaker bm;
 
-        if (argc > 2)
+        if (argc > 3)
         {
-            const char *brawlerTID = argv[2];
             Brawler brawler;
             try
             {
-                brawler = bm.getBrawler(brawlerTID, "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
+                brawler = bm.getBrawler(argv[3], std::string(argv[1]) + "/csv_logic/characters.csv", std::string(argv[1]) + "/csv_logic/cards.csv", std::string(argv[1]) + "/csv_logic/skills.csv", std::string(argv[1]) + "/localization/texts.csv");
             }
             catch (const std::exception &e)
             {
@@ -113,7 +116,7 @@ int main(int argc, char **argv)
         }
         else
         {
-            std::vector<Brawler> brawlers = bm.getBrawlers("baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv", true);
+            std::vector<Brawler> brawlers = bm.getBrawlers(std::string(argv[1]) + "/csv_logic/characters.csv", std::string(argv[1]) + "/csv_logic/cards.csv", std::string(argv[1]) + "/csv_logic/skills.csv", std::string(argv[1]) + "/localization/texts.csv", true);
             for (const auto &brawler : brawlers)
             {
                 printBrawler(brawler);
@@ -125,14 +128,14 @@ int main(int argc, char **argv)
     {
         BrawlerMaker bm;
 
-        bm.removeBrawler(argv[2], "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
+        bm.removeBrawler(argv[2], std::string(argv[1]) + "/csv_logic/characters.csv", std::string(argv[1]) + "/csv_logic/cards.csv", std::string(argv[1]) + "/csv_logic/skills.csv", std::string(argv[1]) + "/localization/texts.csv");
     }
-    else if (!strcmp("edit", argv[1]) && argc > 3)
+    else if (!strcmp("edit", argv[2]) && argc == 5)
     {
         BrawlerMaker bm;
 
-        std::string tid = argv[2];
-        std::string fieldValuePair = argv[3];
+        std::string tid = argv[3];
+        std::string fieldValuePair = argv[4];
 
         size_t separatorPos = fieldValuePair.find('=');
         if (separatorPos == std::string::npos)
@@ -147,7 +150,7 @@ int main(int argc, char **argv)
         Brawler brawler;
         try
         {
-            brawler = bm.getBrawler(tid, "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
+            brawler = bm.getBrawler(tid, std::string(argv[1]) + "/csv_logic/characters.csv", std::string(argv[1]) + "/csv_logic/cards.csv", std::string(argv[1]) + "/csv_logic/skills.csv", std::string(argv[1]) + "/localization/texts.csv");
         }
         catch (const std::exception &e)
         {
@@ -256,7 +259,7 @@ int main(int argc, char **argv)
             brawler.attackProjectile = value;
         else if (field == "ultimateprojectile")
             brawler.ultimateProjectile = value;
-        else if (field == "weapontID")
+        else if (field == "weapontid")
             brawler.weaponTID = value;
         else if (field == "ultimatetid")
             brawler.ultimateTID = value;
@@ -267,28 +270,28 @@ int main(int argc, char **argv)
             std::cerr << "Field not recognized." << std::endl;
             return 1;
         }
-        int result = bm.editBrawler(tid, brawler, "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
+        int result = bm.editBrawler(tid, brawler, std::string(argv[1]) + "/csv_logic/characters.csv", std::string(argv[1]) + "/csv_logic/cards.csv", std::string(argv[1]) + "/csv_logic/skills.csv", std::string(argv[1]) + "/localization/texts.csv");
 
         if (result == 0)
             std::cout << "Brawler successfully updated." << std::endl;
         else
             std::cerr << "Failed to update brawler." << std::endl;
     }
-    else if (!strcmp("clone", argv[1]) && argc > 4)
+    else if (!strcmp("clone", argv[2]) && argc == 6)
     {
         BrawlerMaker bm;
 
-        int result = bm.cloneBrawler(argv[2], argv[3], argv[4], std::string(argv[3]) + "Weapon", std::string(argv[3]) + "Ulti", "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
+        int result = bm.cloneBrawler(argv[3], argv[4], argv[5], std::string(argv[4]) + "Weapon", std::string(argv[4]) + "Ulti", std::string(argv[1]) + "/csv_logic/characters.csv", std::string(argv[1]) + "/csv_logic/cards.csv", std::string(argv[1]) + "/csv_logic/skills.csv", std::string(argv[1]) + "/localization/texts.csv");
 
         if (result == 0)
             std::cout << "Brawler successfully cloned." << std::endl;
         else
             std::cerr << "Failed to clone brawler." << std::endl;
-    }
-    else
-    {
+        }
+        else
+        {
         help();
-    }
+        }
 
     return 0;
 }
