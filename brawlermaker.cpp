@@ -3,7 +3,11 @@
 #include <csv.h>
 #include <stdexcept>
 #include <iostream>
+#ifndef WINDOWS_H
 #include <csv.h>
+#else
+#include "csv.h"
+#endif
 
 Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charactersCSVPath, const std::string cardsCSVPath, const std::string skillsCSVPath, const std::string textsCSVPath) const
 {
