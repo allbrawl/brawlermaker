@@ -16,7 +16,7 @@ Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charac
 
     for (auto &row : characters.rows)
     {
-        if (row[characters.getColumnIndex("TID")] != tid)
+        if (row["TID"] != tid)
         {
             continue;
         }
@@ -543,6 +543,136 @@ int BrawlerMaker::editBrawler(std::string tid, const Brawler &brawler, std::stri
         else if (row[0] == brawler.ultimateTID + "_DESC")
         {
             row[1] = brawler.ultimateDescription;
+        }
+    }
+
+    texts.writeCSV();
+
+    return 0;
+}
+
+int BrawlerMaker::cloneBrawler(std::string tid, std::string newName, std::string newTID, std::string newWeaponName, std::string newUltimateName, std::string charactersCSVPath, std::string cardsCSVPath, std::string skillsCSVPath, std::string textsCSVPath)
+{
+    CSV characters(charactersCSVPath);
+    CSV cards(cardsCSVPath);
+    CSV skills(skillsCSVPath);
+    CSV texts(textsCSVPath);
+
+    for (Row &row : characters.rows)
+    {
+        if (row["TID"] == tid)
+        {
+            Row newRow = row;
+            newRow["TID"] = newTID;
+            newRow["Name"] = newName;
+            characters.rows.push_back(newRow);
+            break;
+        }
+    }
+
+    characters.writeCSV();
+
+    for (Row &row : cards.rows)
+    {
+        if (row["Target"] == newName)
+        {
+            if (row["Type"] == "unlock")
+            {
+                Row newRow = row;
+                newRow["Target"] = newName;
+                newRow["Name"] = newName + "_unlock";
+                cards.rows.push_back(newRow);
+            }
+            else if (row["Type"] == "hp")
+            {
+                Row newRow = row;
+                newRow["Target"] = newName;
+                newRow["Name"] = newName + "_hp";
+                cards.rows.push_back(newRow);
+            }
+            else if (row["Type"] == "skill")
+            {
+                if (row["Skill"] == newWeaponName)
+                {
+                    Row newRow = row;
+                    newRow["Target"] = newName;
+                    newRow["Name"] = newName + "_abi";
+                    newRow["Skill"] = newWeaponName;
+                    cards.rows.push_back(newRow);
+                }
+                else if (row["Skill"] == newUltimateName)
+                {
+                    Row newRow = row;
+                    newRow["Target"] = newName;
+                    newRow["Name"] = newName + "_ulti";
+                    newRow["Skill"] = newUltimateName;
+                    cards.rows.push_back(newRow);
+                }
+            }
+        }
+    }
+
+    cards.writeCSV();
+
+    for (Row &row : skills.rows)
+    {
+        if (row["Name"] == newWeaponName)
+        {
+            Row newRow = row;
+            newRow["Name"] = newWeaponName;
+        }
+        else if (row["Name"] == newUltimateName)
+        {
+            Row newRow = row;
+            newRow["Name"] = newUltimateName;
+        }
+    }
+
+    skills.writeCSV();
+
+    for (Row &row : texts.rows)
+    {
+        if (row["TID"] == tid)
+        {
+            Row newRow = row;
+            newRow[0] = newTID;
+            texts.rows.push_back(newRow);
+        }
+        else if (row["TID"] == tid + "_DESC")
+        {
+            Row newRow = row;
+            newRow[0] = newTID + "_DESC";
+            texts.rows.push_back(newRow);
+        }
+        else if (row["TID"] == tid + "_SHORT_DESC")
+        {
+            Row newRow = row;
+            newRow[0] = newTID + "_SHORT_DESC";
+            texts.rows.push_back(newRow);
+        }
+        else if (row["TID"] == newWeaponName)
+        {
+            Row newRow = row;
+            newRow[0] = newWeaponName;
+            texts.rows.push_back(newRow);
+        }
+        else if (row["TID"] == newWeaponName + "_DESC")
+        {
+            Row newRow = row;
+            newRow[0] = newWeaponName + "_DESC";
+            texts.rows.push_back(newRow);
+        }
+        else if (row["TID"] == newUltimateName)
+        {
+            Row newRow = row;
+            newRow[0] = newUltimateName;
+            texts.rows.push_back(newRow);
+        }
+        else if (row["TID"] == newUltimateName + "_DESC")
+        {
+            Row newRow = row;
+            newRow[0] = newUltimateName + "_DESC";
+            texts.rows.push_back(newRow);
         }
     }
 

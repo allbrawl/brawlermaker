@@ -8,11 +8,11 @@ void help()
     std::cout << "Brawlermaker Utility\n";
     std::cout << "Usage: brawlermaker <mode> [arguments]\n\n";
     std::cout << "Modes:\n";
-    std::cout << "  list [TID]                       Lists all brawlers or details of a specific brawler if TID is provided.\n";
-    std::cout << "  add                              Adds a new brawler to the CSV files.\n";
-    std::cout << "  remove <TID>                     Removes a brawler by TID from the CSV files.\n";
-    std::cout << "  edit <TID> <field>=<value>       Modifies the details of an existing brawler by TID.\n";
-    std::cout << "  clone <original TID> <copy tid>  Creates a duplicate of an existing brawler with a new TID.\n";
+    std::cout << "  list [TID]                                  Lists all brawlers or details of a specific brawler if TID is provided.\n";
+    std::cout << "  add                                         Adds a new brawler to the CSV files.\n";
+    std::cout << "  remove <TID>                                Removes a brawler by TID from the CSV files.\n";
+    std::cout << "  edit <TID> <field>=<value>                  Modifies the details of an existing brawler by TID.\n";
+    std::cout << "  clone <original TID> <copy tid> <new name>  Creates a duplicate of an existing brawler with a new TID.\n";
 }
 
 void printBrawler(const Brawler &brawler)
@@ -273,6 +273,17 @@ int main(int argc, char **argv)
             std::cout << "Brawler successfully updated." << std::endl;
         else
             std::cerr << "Failed to update brawler." << std::endl;
+    }
+    else if (!strcmp("clone", argv[1]) && argc > 4)
+    {
+        BrawlerMaker bm;
+
+        int result = bm.cloneBrawler(argv[2], argv[3], argv[4], std::string(argv[3]) + "Weapon", std::string(argv[3]) + "Ulti", "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
+
+        if (result == 0)
+            std::cout << "Brawler successfully cloned." << std::endl;
+        else
+            std::cerr << "Failed to clone brawler." << std::endl;
     }
     else
     {
