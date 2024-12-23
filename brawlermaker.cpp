@@ -12,6 +12,7 @@ Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charac
     CSV skills(skillsCSVPath);
     CSV texts(textsCSVPath);
     Brawler brawler;
+    bool found;
 
     for (auto &row : characters.rows)
     {
@@ -20,6 +21,7 @@ Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charac
             continue;
         }
 
+        found = true;
         std::string type = row["Type"];
         brawler.codename = row["Name"];
         brawler.tid = row["TID"];
@@ -34,108 +36,112 @@ Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charac
         brawler.attackRechargeUltimateAmount = row["UltiChargeMul"];
         brawler.ultimateRechargeUltimateAmount = row["UltiChargeUltiMul"];
         brawler.defaultSkin = row["DefaultSkin"];
-
-        for (auto &skillsRow : skills.rows)
-        {
-            if (skillsRow["Name"] == brawler.weaponSkill)
-            {
-                try
-                {
-                    brawler.weaponReloadTime = skillsRow["RechargeTime"];
-                    brawler.weaponAmmoCount = skillsRow["MaxCharge"];
-                    brawler.weaponDamage = skillsRow["Damage"];
-                    brawler.attackSpread = skillsRow["Spread"];
-                    brawler.attackProjectileCount = skillsRow["NumBulletsInOneAttack"];
-                    brawler.weaponTimeBetweenAttacks = skillsRow["MsBetweenAttacks"];
-                    brawler.attackDuration = skillsRow["ActiveTime"];
-                    brawler.weaponRange = skillsRow["CastingRange"];
-                    brawler.attackProjectile = skillsRow["Projectile"];
-                    brawler.attackCooldown = skillsRow["Cooldown"];
-                }
-
-                catch (const std::exception &e)
-                {
-                    std::cerr << "Error: " << e.what() << " at line " << __LINE__ << " indentifier " << skillsRow[0] << std::endl;
-                    throw;
-                }
-            }
-            if (skillsRow[0] == brawler.ultimateSkill)
-            {
-                try
-                {
-
-                    brawler.ultimateDamage = skillsRow["Damage"];
-                    brawler.ultimateSpread = skillsRow["Spread"];
-                    brawler.ultimateProjectileCount = skillsRow["NumBulletsInOneAttack"];
-                    brawler.ultimateAttackDuration = skillsRow["ActiveTime"];
-                    brawler.summonedCharacter == skillsRow["SummonedCharacter"];
-                    brawler.ultimateRange = skillsRow["CastingRange"];
-                    brawler.ultimateProjectile = skillsRow["Projectile"];
-                    brawler.ultimateCooldown = skillsRow["Cooldown"];
-                }
-                catch (const std::exception &e)
-                {
-                    std::cerr << "Error: " << e.what() << " at line " << __LINE__ << " identifier " << skillsRow[0] << std::endl;
-                    throw;
-                }
-            }
-        }
-
-        for (Row &cardsRow : cards.rows)
-        {
-            if (cardsRow["Target"] == brawler.codename)
-            {
-                if (cardsRow["Type"] == "unlock")
-                {
-                    brawler.number = cardsRow["SortOrder"];
-                    const std::string csvRarity = cardsRow["Rarity"];
-                }
-                else if (cardsRow["Type"] == "skill")
-                {
-                    if (cardsRow["Skill"] == brawler.weaponSkill)
-                    {
-                        brawler.weaponTID = cardsRow["TID"];
-                    }
-                    else if (cardsRow["Skill"] == brawler.ultimateSkill)
-                    {
-                        brawler.ultimateTID = cardsRow["TID"];
-                    }
-                }
-            }
-        }
-
-        for (Row &textsRow : texts.rows)
-        {
-            if (textsRow[0] == brawler.tid)
-            {
-                brawler.name = textsRow[1];
-            }
-            else if (textsRow[0] == brawler.tid + "_DESC")
-            {
-                brawler.description = textsRow[1];
-            }
-            else if (textsRow[0] == brawler.tid + "_SHORT_DESC")
-            {
-                brawler.shortDescription = textsRow[1];
-            }
-            else if (textsRow[0] == brawler.weaponTID)
-            {
-                brawler.weaponName = textsRow[1];
-            }
-            else if (textsRow[0] == brawler.ultimateTID)
-            {
-                brawler.ultimateName = textsRow[1];
-            }
-            else if (textsRow[0] == brawler.weaponTID + "_DESC")
-            {
-                brawler.weaponDescription = textsRow[1];
-            }
-            else if (textsRow[0] == brawler.ultimateTID + "_DESC")
-            {
-                brawler.ultimateDescription = textsRow[1];
-            }
-        }
         break;
+    }
+
+    if (!found)
+    {
+        throw std::runtime_error("Brawler with TID " + tid + " not found.");
+    }
+
+    for (auto &skillsRow : skills.rows)
+    {
+        if (skillsRow["Name"] == brawler.weaponSkill)
+        {
+            try
+            {
+                brawler.weaponReloadTime = skillsRow["RechargeTime"];
+                brawler.weaponAmmoCount = skillsRow["MaxCharge"];
+                brawler.weaponDamage = skillsRow["Damage"];
+                brawler.attackSpread = skillsRow["Spread"];
+                brawler.attackProjectileCount = skillsRow["NumBulletsInOneAttack"];
+                brawler.weaponTimeBetweenAttacks = skillsRow["MsBetweenAttacks"];
+                brawler.attackDuration = skillsRow["ActiveTime"];
+                brawler.weaponRange = skillsRow["CastingRange"];
+                brawler.attackProjectile = skillsRow["Projectile"];
+                brawler.attackCooldown = skillsRow["Cooldown"];
+            }
+
+            catch (const std::exception &e)
+            {
+                std::cerr << "Error: " << e.what() << " at line " << __LINE__ << " indentifier " << skillsRow[0] << std::endl;
+                throw;
+            }
+        }
+        if (skillsRow[0] == brawler.ultimateSkill)
+        {
+            try
+            {
+                brawler.ultimateDamage = skillsRow["Damage"];
+                brawler.ultimateSpread = skillsRow["Spread"];
+                brawler.ultimateProjectileCount = skillsRow["NumBulletsInOneAttack"];
+                brawler.ultimateAttackDuration = skillsRow["ActiveTime"];
+                brawler.summonedCharacter == skillsRow["SummonedCharacter"];
+                brawler.ultimateRange = skillsRow["CastingRange"];
+                brawler.ultimateProjectile = skillsRow["Projectile"];
+                brawler.ultimateCooldown = skillsRow["Cooldown"];
+            }
+            catch (const std::exception &e)
+            {
+                std::cerr << "Error: " << e.what() << " at line " << __LINE__ << " identifier " << skillsRow[0] << std::endl;
+                throw;
+            }
+        }
+    }
+
+    for (Row &cardsRow : cards.rows)
+    {
+        if (cardsRow["Target"] == brawler.codename)
+        {
+            if (cardsRow["Type"] == "unlock")
+            {
+                brawler.number = cardsRow["SortOrder"];
+                const std::string csvRarity = cardsRow["Rarity"];
+            }
+            else if (cardsRow["Type"] == "skill")
+            {
+                if (cardsRow["Skill"] == brawler.weaponSkill)
+                {
+                    brawler.weaponTID = cardsRow["TID"];
+                }
+                else if (cardsRow["Skill"] == brawler.ultimateSkill)
+                {
+                    brawler.ultimateTID = cardsRow["TID"];
+                }
+            }
+        }
+    }
+
+    for (Row &textsRow : texts.rows)
+    {
+        if (textsRow[0] == brawler.tid)
+        {
+            brawler.name = textsRow[1];
+        }
+        else if (textsRow[0] == brawler.tid + "_DESC")
+        {
+            brawler.description = textsRow[1];
+        }
+        else if (textsRow[0] == brawler.tid + "_SHORT_DESC")
+        {
+            brawler.shortDescription = textsRow[1];
+        }
+        else if (textsRow[0] == brawler.weaponTID)
+        {
+            brawler.weaponName = textsRow[1];
+        }
+        else if (textsRow[0] == brawler.ultimateTID)
+        {
+            brawler.ultimateName = textsRow[1];
+        }
+        else if (textsRow[0] == brawler.weaponTID + "_DESC")
+        {
+            brawler.weaponDescription = textsRow[1];
+        }
+        else if (textsRow[0] == brawler.ultimateTID + "_DESC")
+        {
+            brawler.ultimateDescription = textsRow[1];
+        }
     }
     return brawler;
 }

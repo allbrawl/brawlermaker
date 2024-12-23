@@ -98,7 +98,16 @@ int main(int argc, char **argv)
         if (argc > 2)
         {
             const char *brawlerTID = argv[2];
-            Brawler brawler = bm.getBrawler(brawlerTID, "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
+            Brawler brawler;
+            try
+            {
+                brawler = bm.getBrawler(brawlerTID, "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
+            }
+            catch (const std::exception &e)
+            {
+                std::cerr << e.what() << '\n';
+                exit(1);
+            }
             printBrawler(brawler);
             std::cout << "*************************" << "\n";
         }
@@ -135,8 +144,17 @@ int main(int argc, char **argv)
         std::string field = fieldValuePair.substr(0, separatorPos);
         std::string value = fieldValuePair.substr(separatorPos + 1);
         field = tolower(field);
+        Brawler brawler;
+        try
+        {
+            brawler = bm.getBrawler(tid, "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << e.what() << '\n';
+            exit(1);
+        }
 
-        Brawler brawler = bm.getBrawler(tid, "baseCSVs/csv_logic/characters.csv", "baseCSVs/csv_logic/cards.csv", "baseCSVs/csv_logic/skills.csv", "baseCSVs/localization/texts.csv");
         if (field == "tid")
             brawler.tid = value;
         else if (field == "name")
@@ -175,6 +193,7 @@ int main(int argc, char **argv)
                 return 1;
             }
         }
+
         else if (field == "weaponskill")
             brawler.weaponSkill = value;
         else if (field == "ultimateskill")
