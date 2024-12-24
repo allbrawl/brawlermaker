@@ -5,3 +5,6 @@ libbrawlermaker.a
 # I just use the CSVs to check some values if you want base v29 csvs https://download.natesworks.com/baseCSVs.zip
 baseCSVs
 test.out
+release
+bm
+csv*
