@@ -1,10 +1,6 @@
 #include "brawlermaker.h"
 #include <iostream>
-#ifndef WINDOWS_H
 #include <csv.h>
-#else
-#include "csv.h"
-#endif
 #include <cstring>
 
 void help()
