@@ -6,7 +6,7 @@ INCLUDE_DIR = /usr/include
 LIB_DIR = /usr/lib
 BIN_DIR = /usr/bin
 TARGET_BIN = bm
-CXXFLAGS = -O2 -Wall -std=c++17 -static-libgcc -static-libstdc++
+CXXFLAGS = -O2 -Wall -std=c++17
 
 all: $(TARGET_LIB) $(TARGET_BIN)
 
@@ -30,8 +30,5 @@ install: all
 clean:
 	rm -f *.o $(TARGET_LIB) $(TARGET_BIN)
 
-win: CC = x86_64-w64-mingw32-g++
-win: CFLAGS += $(CXXFLAGS)
-win: TARGET_BIN = bm.exe
-win: LDFLAGS += -lws2_32
-win: all
+win:
+	$(CC) $(CXXFLAGS) brawlermaker.cpp main.cpp csv.cpp -o bm.exe
