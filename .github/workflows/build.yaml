@@ -1,0 +1,46 @@
+name: Build Brawlermaker
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential g++ mingw-w64
+
+      - name: Install libcsv
+        run: |
+          git clone https://github.com/natesdev/libcsv.git
+          cd libcsv
+          make
+          sudo make install
+          cd ..
+
+      - name: Build Library
+        run: |
+          make clean
+          make libbrawlermaker.a
+          make libbrawlermaker.so
+
+      - name: Build CLI
+        run: |
+          make bm
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: |
+            bm
+            bm.exe
+            libbrawlermaker.a
+            libbrawlermaker.so

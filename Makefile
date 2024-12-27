@@ -1,34 +1,40 @@
 CC = g++
-CFLAGS = -c -g
-LDFLAGS = -lbrawlermaker -lcsv
-TARGET_LIB = libbrawlermaker.a
+CFLAGS = -c -g -Wall -std=c++17
+CXXFLAGS = -O2 -std=c++17
+AR = ar rcs
+
+TARGET_STATIC = libbrawlermaker.a
+TARGET_SHARED = libbrawlermaker.so
+TARGET_BIN = bm
 INCLUDE_DIR = /usr/include
 LIB_DIR = /usr/lib
 BIN_DIR = /usr/bin
-TARGET_BIN = bm
-CXXFLAGS = -O2 -Wall -std=c++17
 
-all: $(TARGET_LIB) $(TARGET_BIN)
+LIB_SOURCES = brawlermaker.cpp
+LIB_OBJECTS = $(LIB_SOURCES:.cpp=.o)
 
-brawlermaker.o: brawlermaker.cpp
-	$(CC) $(CFLAGS) brawlermaker.cpp -o brawlermaker.o
+CLI_SOURCES = main.cpp
+CLI_OBJECTS = $(CLI_SOURCES:.cpp=.o)
 
-$(TARGET_LIB): brawlermaker.o
-	ar rcs $(TARGET_LIB) brawlermaker.o
+all: $(TARGET_STATIC) $(TARGET_SHARED) $(TARGET_BIN)
 
-main.o: main.cpp
-	$(CC) $(CFLAGS) main.cpp -o main.o
+$(TARGET_STATIC): $(LIB_OBJECTS)
+	$(AR) $@ $^
 
-$(TARGET_BIN): main.o $(TARGET_LIB)
-	$(CC) main.o -o $(TARGET_BIN) $(LDFLAGS)
+$(TARGET_SHARED): $(LIB_SOURCES)
+	$(CC) -fPIC -c $(LIB_SOURCES)
+	$(CC) -shared -o $@ brawlermaker.o
+
+$(TARGET_BIN): $(CLI_OBJECTS) $(TARGET_STATIC)
+	$(CC) $(CLI_OBJECTS) -o $@ -L. -lbrawlermaker -lcsv -static
+
+%.o: %.cpp
+	$(CC) $(CFLAGS) -fPIC -o $@ $<
 
 install: all
 	cp brawlermaker.h brawler.h $(INCLUDE_DIR)/
-	cp $(TARGET_LIB) $(LIB_DIR)/
+	cp $(TARGET_STATIC) $(TARGET_SHARED) $(LIB_DIR)/
 	cp $(TARGET_BIN) $(BIN_DIR)/
 
 clean:
-	rm -f *.o $(TARGET_LIB) $(TARGET_BIN)
-
-win:
-	$(CC) $(CXXFLAGS) brawlermaker.cpp main.cpp csv.cpp -o bm.exe
+	rm -f *.o $(TARGET_STATIC) $(TARGET_SHARED) $(TARGET_BIN)
