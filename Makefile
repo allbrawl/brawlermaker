@@ -1,5 +1,6 @@
 CC = g++
 CFLAGS = -c -g -Wall -std=c++17
+CXXFLAGS = -O2 -std=c++17
 AR = ar rcs
 
 TARGET_STATIC = libbrawlermaker.a
@@ -20,14 +21,15 @@ all: $(TARGET_STATIC) $(TARGET_SHARED) $(TARGET_BIN)
 $(TARGET_STATIC): $(LIB_OBJECTS)
 	$(AR) $@ $^
 
-$(TARGET_SHARED): $(LIB_OBJECTS)
-	$(CC) -shared -o $@ $^
+$(TARGET_SHARED): $(LIB_SOURCES)
+	$(CC) -fPIC -c $(LIB_SOURCES)
+	$(CC) -shared -o $@ brawlermaker.o
 
 $(TARGET_BIN): $(CLI_OBJECTS) $(TARGET_STATIC)
-	$(CC) $(CLI_OBJECTS) -o $@ -L. -lbrawlermaker -static
+	$(CC) $(CLI_OBJECTS) -o $@ -L. -lbrawlermaker -lcsv -static
 
 %.o: %.cpp
-	$(CC) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -fPIC -o $@ $<
 
 install: all
 	cp brawlermaker.h brawler.h $(INCLUDE_DIR)/
