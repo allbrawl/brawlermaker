@@ -29,7 +29,7 @@ wget https://dl.natesworks.com/tools/brawlermaker/android/bm
 Now simply move it to `bin` (the place where you store binaries on linux) using the following command:
 
 ```sh
-mv bm $TERMUX_PREFIX/bin
+mv bm $PREFIX/bin
 ```
 
 ## Setting up storage
