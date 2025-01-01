@@ -32,6 +32,14 @@ Now simply move it to `bin` (the place where you store binaries on linux) using 
 mv bm $PREFIX/bin
 ```
 
+## Grant execute permissions
+
+To run a binary on linux you must grant it execute permissions.
+
+```sh
+chmod +x $PREFIX/bin/bm
+```
+
 ## Setting up storage
 
 To access your documents (where you have the base Brawl Stars APK) you can setup storage.
