@@ -50,6 +50,22 @@ termux-setup-storage
 
 Now copy the base mod from `storage/documents`.
 
+## Fixing "Bad system call"
+
+**Credits:** burned kenji
+
+### Install proot
+
+```sh
+pkg in proot
+```
+
+### Enter proot
+
+```sh
+termux-chroot
+```
+
 ## Finished
 
-Now you can use brawlermaker by using the `bm` command.
+You can now use brawlermaker by running the `bm` command!
