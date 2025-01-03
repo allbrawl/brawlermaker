@@ -5,8 +5,8 @@
 
 void help()
 {
-    std::cout << "Brawlermaker Utility\n";
-    std::cout << "Usage: brawlermaker <csv path> <mode> [arguments]\n\n";
+    std::cout << "Brawlermaker v1.1\n";
+    std::cout << "Usage: bm <csv path> <mode> [arguments]\n\n";
     std::cout << "Modes:\n";
     std::cout << "  list [TID]                                  Lists all brawlers or details of a specific brawler if TID is provided.\n";
     std::cout << "  add                                         Adds a new brawler to the CSV files.\n";

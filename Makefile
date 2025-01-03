@@ -1,6 +1,7 @@
 CC = g++
-CFLAGS = -c -g -Wall -std=c++17
-CXXFLAGS = -O2 -std=c++17
+CFLAGS = -c -g
+CFLAGS = -c -g -Wall
+CXXFLAGS = -O2
 AR = ar rcs
 
 TARGET_STATIC = libbrawlermaker.a
@@ -26,7 +27,7 @@ $(TARGET_SHARED): $(LIB_SOURCES)
 	$(CC) -shared -o $@ brawlermaker.o
 
 $(TARGET_BIN): $(CLI_OBJECTS) $(TARGET_STATIC)
-	$(CC) $(CLI_OBJECTS) -o $@ -L. -lbrawlermaker -lcsv -static
+	$(CC) $(CLI_OBJECTS) -o $@ -L. -lbrawlermaker -lflatline -static
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) -fPIC -o $@ $<
