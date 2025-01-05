@@ -89,14 +89,14 @@ std::string tolower(std::string text)
 
 int main(int argc, char **argv)
 {
-    if (argc == 1)
+    if (argc >= 2)
     {
         TUI tui;
+        if (argc == 2)
+        {
+            tui.assetsFolder = argv[1];
+        }
         tui.mainMenu();
-    }
-    else if (argc <= 2)
-    {
-        help();
     }
     else if (!strcmp("list", argv[2]))
     {

@@ -10,11 +10,11 @@ public:
     void mainMenu();
     void assetsFolderSelectionMenu();
     Brawler brawlerSelectionMenu();
-    void addBrawlerMenu(Brawler &brawler);
-    void editBrawlerMenu(Brawler &brawler);
-    void removeBrawlerMenu(Brawler &brawler);
+    void addBrawlerMenu();
+    void editBrawlerMenu();
+    void removeBrawlerMenu();
     void optionsMenu();
+    std::string assetsFolder;
 private:
     int menu(std::string tittle, const char *choices[]);
-    std::string assetsFolder;
 };
