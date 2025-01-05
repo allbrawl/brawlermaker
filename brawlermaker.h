@@ -1,10 +1,8 @@
-#ifndef BRAWLERMAKER_H
-#define BRAWLERMAKER_H
-#include <limits>
-constexpr int UNDEFINED = std::numeric_limits<int>::min();
+#pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
+
 #include "brawler.h"
 
 class BrawlerMaker
@@ -20,5 +18,3 @@ public:
 private:
     std::vector<Brawler> brawlers;
 };
-
-#endif

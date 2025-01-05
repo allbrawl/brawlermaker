@@ -1,5 +1,4 @@
-#ifndef BRAWLER_H
-#define BRAWLER_H
+#pragma once
 
 #include <vector>
 #include <string>
@@ -95,4 +94,3 @@ public:
           ultimateProjectile(ultimateProjectile), rarity(rarity), weaponDescription(weaponDescription), ultimateDescription(ultimateDescription), defaultSkin(defaultSkin) {};
     Brawler() : tid(""), name(""), codename(""), description(""), shortDescription(""), weaponTID(""), ultimateTID(""), weaponName(""), ultimateName(""), rarity(Rarity::TrophyRoad), weaponDescription(""), ultimateDescription(""), weaponSkill(""), ultimateSkill(""), speed(""), health(""), iconSWF(""), icon(""), pet(""), summonedCharacter(""), scale(""), weaponRange(""), ultimateRange(""), weaponReloadTime(""), weaponAmmoCount(""), ultimateAmmoCount(""), weaponDamage(""), ultimateDamage(""), attackSpread(""), ultimateSpread(""), attackProjectileCount(""), ultimateProjectileCount(""), weaponTimeBetweenAttacks(""), ultimateTimeBetweenAttacks(""), attackDuration(""), ultimateAttackDuration(""), attackRechargeUltimateAmount(""), ultimateRechargeUltimateAmount(""), number(""), attackCooldown(""), ultimateCooldown(""), attackProjectile(""), ultimateProjectile(""), defaultSkin("") {}
 };
-#endif

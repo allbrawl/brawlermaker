@@ -1,7 +1,9 @@
-#include "brawlermaker.h"
 #include <iostream>
 #include <csv.h>
 #include <cstring>
+
+#include "brawlermaker.h"
+#include "tui.h"
 
 void help()
 {
@@ -87,7 +89,12 @@ std::string tolower(std::string text)
 
 int main(int argc, char **argv)
 {
-    if (argc <= 2)
+    if (argc == 1)
+    {
+        TUI tui;
+        tui.mainMenu();
+    }
+    else if (argc <= 2)
     {
         help();
     }

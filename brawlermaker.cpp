@@ -1,8 +1,9 @@
-#include "brawler.h"
-#include "brawlermaker.h"
 #include <csv.h>
 #include <stdexcept>
 #include <iostream>
+
+#include "brawler.h"
+#include "brawlermaker.h"
 
 Brawler BrawlerMaker::getBrawler(const std::string tid, const std::string charactersCSVPath, const std::string cardsCSVPath, const std::string skillsCSVPath, const std::string textsCSVPath) const
 {
