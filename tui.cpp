@@ -72,7 +72,10 @@ int TUI::menu(std::string title, const char *choices[])
             start = highlight - visible + 1;
     }
 
-    endwin();
+    clear();
+    wmove(stdscr, 0, 0);
+    waddstr(stdscr, "Loading...");
+    refresh();
     return choice;
 }
 
@@ -140,4 +143,5 @@ void TUI::removeBrawlerMenu()
                      assetsFolder + "/csv_logic/cards.csv",
                      assetsFolder + "/csv_logic/skills.csv",
                      assetsFolder + "/localization/texts.csv");
+    mainMenu();
 }
