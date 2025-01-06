@@ -1,7 +1,8 @@
-#include "brawlermaker.h"
 #include <iostream>
 #include <csv.h>
 #include <cstring>
+
+#include "brawlermaker.h"
 
 void help()
 {
@@ -9,10 +10,9 @@ void help()
     std::cout << "Usage: bm <csv path> <mode> [arguments]\n\n";
     std::cout << "Modes:\n";
     std::cout << "  list [TID]                                  Lists all brawlers or details of a specific brawler if TID is provided.\n";
-    std::cout << "  add                                         Adds a new brawler to the CSV files.\n";
+    std::cout << "  clone <original TID> <copy tid> <new name>  Creates a duplicate of an existing brawler with a new TID.\n";
     std::cout << "  remove <TID>                                Removes a brawler by TID from the CSV files.\n";
     std::cout << "  edit <TID> <field>=<value>                  Modifies the details of an existing brawler by TID.\n";
-    std::cout << "  clone <original TID> <copy tid> <new name>  Creates a duplicate of an existing brawler with a new TID.\n";
 }
 
 void printBrawler(const Brawler &brawler)
@@ -283,11 +283,11 @@ int main(int argc, char **argv)
             std::cout << "Brawler successfully cloned." << std::endl;
         else
             std::cerr << "Failed to clone brawler." << std::endl;
-        }
-        else
-        {
+    }
+    else
+    {
         help();
-        }
+    }
 
     return 0;
 }
