@@ -91,7 +91,7 @@ Brawler TUI::brawlerSelectionMenu()
         throw std::runtime_error("No brawlers found");
     }
 
-    std::vector<const char*> choices;
+    std::vector<const char *> choices;
     for (const auto &brawler : brawlers)
     {
         choices.push_back(brawler.name.c_str());
@@ -100,14 +100,8 @@ Brawler TUI::brawlerSelectionMenu()
 
     int choice = menu("Select a brawler", choices.data());
 
-    if (choice >= 0 && choice < static_cast<int>(brawlers.size()))
-    {
-        return brawlers[choice];
-    }
-
-    throw std::runtime_error("Invalid choice");
+    return brawlers[choice];
 }
-
 
 void TUI::mainMenu()
 {
@@ -120,16 +114,16 @@ void TUI::mainMenu()
     switch (choice)
     {
     case 0:
-        //addBrawlerMenu();
+        // addBrawlerMenu();
         break;
     case 1:
-        //editBrawlerMenu();
+        // editBrawlerMenu();
         break;
     case 2:
         removeBrawlerMenu();
         break;
     case 3:
-        //optionsMenu();
+        // optionsMenu();
         break;
     case 4:
         endwin();
@@ -140,14 +134,10 @@ void TUI::mainMenu()
 void TUI::removeBrawlerMenu()
 {
     Brawler brawler = brawlerSelectionMenu();
-    initscr();
-    noecho();
-    cbreak();
-    const char *choices[] = {"Yes", "No"};
-    int choice = menu("Are you sure you want to remove " + brawler.name + "?", choices);
-    if (choice == 0)
-    {
-        BrawlerMaker bm;
-        bm.removeBrawler(brawler.tid, assetsFolder + "/csv_logic/characters.csv", assetsFolder + "/csv_logic/cards.csv", assetsFolder + "/csv_logic/skills.csv", assetsFolder + "/localization/texts.csv");
-    }
+    BrawlerMaker bm;
+    bm.removeBrawler(brawler.tid,
+                     assetsFolder + "/csv_logic/characters.csv",
+                     assetsFolder + "/csv_logic/cards.csv",
+                     assetsFolder + "/csv_logic/skills.csv",
+                     assetsFolder + "/localization/texts.csv");
 }

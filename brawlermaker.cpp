@@ -410,7 +410,6 @@ int BrawlerMaker::removeBrawler(std::string tid, std::string charactersCSVPath, 
     }
 
     texts.writeCSV();
-
     return 0;
 }
 
