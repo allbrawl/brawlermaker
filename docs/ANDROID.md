@@ -21,7 +21,13 @@ pkg in wget
 To download brawlermaker simply fetch it using `wget`.
 
 ```sh
-wget https://dl.natesworks.com/tools/brawlermaker/android/bm
+wget https://dl.natesworks.com/tools/brawlermaker/linux/arm64/bm
+```
+
+If you don't have aarch64 but rather arm run this instead
+
+```sh
+wget https://dl.natesworks.com/tools/brawlermaker/linux/arm/bm
 ```
 
 ### Moving to bin directory
